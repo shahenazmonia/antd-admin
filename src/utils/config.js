@@ -2,7 +2,8 @@ module.exports = {
   siteName: 'AntD Admin',
   copyright: 'Ant Design Admin  ©2020 zuiidea',
   logoPath: '/logo.svg',
-  apiPrefix: '/api/v1',
+  apiUrl: 'https://services7-test-app.herokuapp.com',
+  apiPrefix: '/api',
   fixedHeader: true, // sticky primary layout header
 
   /* Layout configuration, specify which layout to use for route. */

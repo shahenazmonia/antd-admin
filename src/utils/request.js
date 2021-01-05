@@ -1,8 +1,9 @@
 import axios from 'axios'
-import { cloneDeep, isEmpty } from 'lodash'
-const { parse, compile } = require("path-to-regexp")
+import { cloneDeep } from 'lodash'
+import { parse, compile } from 'path-to-regexp'
 import { message } from 'antd'
 import { CANCEL_REQUEST_MESSAGE } from 'utils/constant'
+import { apiUrl } from 'utils/config'
 
 const { CancelToken } = axios
 window.cancelRequest = new Map()
@@ -12,7 +13,7 @@ export default function request(options) {
   const cloneData = cloneDeep(data)
 
   try {
-    let domain = ''
+    let domain = apiUrl
     const urlMatch = url.match(/[a-zA-z]+:\/\/[^/]*/)
     if (urlMatch) {
       ;[domain] = urlMatch
@@ -33,8 +34,12 @@ export default function request(options) {
   }
 
   options.url = url
-  options.params = cloneData
-  options.cancelToken = new CancelToken(cancel => {
+  if (options.method == 'GET') {
+    options.params = cloneData
+  } else {
+    options.params = {}
+  }
+  options.cancelToken = new CancelToken((cancel) => {
     window.cancelRequest.set(Symbol(Date.now()), {
       pathname: window.location.pathname,
       cancel,
@@ -42,7 +47,7 @@ export default function request(options) {
   })
 
   return axios(options)
-    .then(response => {
+    .then((response) => {
       const { statusText, status, data } = response
 
       let result = {}
@@ -62,7 +67,7 @@ export default function request(options) {
         ...result,
       })
     })
-    .catch(error => {
+    .catch((error) => {
       const { response, message } = error
 
       if (String(message) === CANCEL_REQUEST_MESSAGE) {
@@ -73,11 +78,18 @@ export default function request(options) {
 
       let msg
       let statusCode
-
+      let fields
       if (response && response instanceof Object) {
         const { data, statusText } = response
         statusCode = response.status
-        msg = data.message || statusText
+        msg =
+          data.feedback && data.feedback.message
+            ? data.feedback.message.en
+            : data.message.en || statusText
+        fields =
+          data.feedback && data.feedback.fields
+            ? data.feedback.fields
+            : data.fields || statusText
       } else {
         statusCode = 600
         msg = error.message || 'Network Error'
@@ -88,6 +100,7 @@ export default function request(options) {
         success: false,
         statusCode,
         message: msg,
+        fields,
       })
     })
 }

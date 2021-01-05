@@ -3,14 +3,14 @@
 import { history } from 'umi'
 import { stringify } from 'qs'
 import store from 'store'
-const { pathToRegexp } = require("path-to-regexp")
-import { ROLE_TYPE } from 'utils/constant'
 import { queryLayout } from 'utils'
 import { CANCEL_REQUEST_MESSAGE } from 'utils/constant'
 import api from 'api'
 import config from 'config'
-
-const { queryRouteList, logoutUser, queryUserInfo } = api
+import Axios from 'axios'
+import listOfRoute from '../route'
+const { pathToRegexp } = require('path-to-regexp')
+const { logoutUser } = api
 
 const goDashboard = () => {
   if (pathToRegexp(['/', '/login']).exec(window.location.pathname)) {
@@ -52,7 +52,7 @@ export default {
       dispatch({ type: 'query' })
     },
     setupHistory({ dispatch, history }) {
-      history.listen(location => {
+      history.listen((location) => {
         dispatch({
           type: 'updateState',
           payload: {
@@ -78,38 +78,16 @@ export default {
   },
   effects: {
     *query({ payload }, { call, put, select }) {
-      // store isInit to prevent query trigger by refresh
-      const isInit = store.get('isInit')
-      if (isInit) {
-        goDashboard()
-        return
+      const { locationPathname } = yield select((_) => _.app)
+      const user = store.get('user')
+      let permissions = {
+        visit: [],
       }
-      const { locationPathname } = yield select(_ => _.app)
-      const { success, user } = yield call(queryUserInfo, payload)
-      if (success && user) {
-        const { list } = yield call(queryRouteList)
-        const { permissions } = user
-        let routeList = list
-        if (
-          permissions.role === ROLE_TYPE.ADMIN ||
-          permissions.role === ROLE_TYPE.DEVELOPER
-        ) {
-          permissions.visit = list.map(item => item.id)
-        } else {
-          routeList = list.filter(item => {
-            const cases = [
-              permissions.visit.includes(item.id),
-              item.mpid
-                ? permissions.visit.includes(item.mpid) || item.mpid === '-1'
-                : true,
-              item.bpid ? permissions.visit.includes(item.bpid) : true,
-            ]
-            return cases.every(_ => _)
-          })
-        }
-        store.set('routeList', routeList)
+      permissions.visit = listOfRoute.map((item) => item.id)
+      if (user) {
+        store.set('routeList', listOfRoute)
         store.set('permissions', permissions)
-        store.set('user', user)
+        Axios.defaults.headers.common.Authorization = user.token
         store.set('isInit', true)
         goDashboard()
       } else if (queryLayout(config.layouts, locationPathname) !== 'public') {
@@ -131,6 +109,7 @@ export default {
         store.set('isInit', false)
         yield put({ type: 'query' })
       } else {
+        console.log('--------', data)
         throw data
       }
     },

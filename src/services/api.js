@@ -15,4 +15,8 @@ export default {
   queryPostList: '/posts',
 
   queryDashboard: '/dashboard',
+
+  servicesList: 'GET /getAllServices',
+  createServices: 'POST /postNewService',
+  updateServices: 'Patch /updateService ',
 }

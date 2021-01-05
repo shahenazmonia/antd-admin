@@ -4,25 +4,25 @@ import { connect } from 'umi'
 import { withI18n } from '@lingui/react'
 import { Page } from 'components'
 import List from './components/List'
+import Filter from './components/Filter'
 
-@withI18n()
-@connect(({ user, loading }) => ({ user, loading }))
-class User extends Component {
+@connect(({ services, loading }) => ({ services, loading }))
+class Services extends Component {
   render() {
     return (
       <Page inner>
-        {/* <Filter {...this.filterProps} /> */}
+        <Filter />
         <List />
       </Page>
     )
   }
 }
 
-User.propTypes = {
+Services.propTypes = {
   user: PropTypes.object,
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
 }
 
-export default User
+export default Services
