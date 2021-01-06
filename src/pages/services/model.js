@@ -65,16 +65,7 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
-        const { fields } = error
-        Object.keys(fields).map((field) => {
-          fields[field].status === 'error' &&
-            message.error({
-              content: <span id={field}>{fields[field].feedback.ar}</span>,
-              style: {
-                marginTop: '20vh',
-              },
-            })
-        })
+        console.log(error)
       }
     },
     // *update({ payload }, { put, call }) {
