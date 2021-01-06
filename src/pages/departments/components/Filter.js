@@ -1,77 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { FilterItem } from 'components'
-import './List.less'
+import '../../services/components/list.less'
 import { Trans } from '@lingui/react'
 import { history, Link, withRouter } from 'umi'
-import {
-  Button,
-  Row,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  Cascader,
-  Select,
-} from 'antd'
+import { Button, Row, Col, Form } from 'antd'
 import '../../../layouts/BaseLayout.less'
 import _ from 'lodash'
-const { Search } = Input
-const { RangePicker } = DatePicker
-
-const ColProps = {
-  xs: 24,
-  sm: 12,
-  style: {
-    marginBottom: 16,
-  },
-}
-
-const TwoColProps = {
-  ...ColProps,
-  xl: 96,
-}
 
 class Filter extends Component {
   formRef = React.createRef()
 
-  handleFields = (fields) => {
-    const { createTime } = fields
-    if (createTime && createTime.length) {
-      fields.createTime = [
-        moment(createTime[0]).format('YYYY-MM-DD'),
-        moment(createTime[1]).format('YYYY-MM-DD'),
-      ]
-    }
-    return fields
-  }
-
-  handleSubmit = () => {
-    const { onFilterChange } = this.props
-    const values = this.formRef.current.getFieldsValue()
-    const fields = this.handleFields(values)
-    onFilterChange(fields)
-  }
-
-  handleReset = () => {
-    const fields = this.formRef.current.getFieldsValue()
-    for (let item in fields) {
-      if ({}.hasOwnProperty.call(fields, item)) {
-        if (fields[item] instanceof Array) {
-          fields[item] = []
-        } else {
-          fields[item] = undefined
-        }
-      }
-    }
-    this.formRef.current.setFieldsValue(fields)
-    this.handleSubmit()
-  }
   render() {
-    const { onAdd, filter, i18n } = this.props
-    // const { name, address } = filter
-
     return (
       <div className={'searchAndFilter'}>
         <Form ref={this.formRef} name="control-ref">
@@ -92,11 +32,11 @@ class Filter extends Component {
                       className="add-button"
                       onClick={() =>
                         history.push({
-                          pathname: '/services/create',
+                          pathname: '/departments/create',
                         })
                       }
                     >
-                      <Trans> + Add Services</Trans>
+                      <Trans> + Add Department</Trans>
                     </Button>
                   </div>
                 </Col>

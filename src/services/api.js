@@ -18,5 +18,9 @@ export default {
 
   servicesList: 'GET /getAllServices',
   createServices: 'POST /postNewService',
-  updateServices: 'Patch /updateService ',
+  updateServices: 'PUT /updateService ',
+
+  departmentsList: 'GET /getAllDepartments',
+  createDepartment: 'POST /postNewDepartment',
+  updateDepartment: 'PUT /updateDepartment ',
 }

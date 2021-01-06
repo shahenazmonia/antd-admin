@@ -6,17 +6,21 @@ import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
 import styles from './List.less'
 
-@connect(({ loading, dispatch, services }) => ({ loading, dispatch, services }))
+@connect(({ loading, dispatch, departments }) => ({
+  loading,
+  dispatch,
+  departments,
+}))
 class List extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
-      type: 'services/list',
+      type: 'departments/list',
       payload: {},
     })
   }
   render() {
-    const { services, loading } = this.props
+    const { departments, loading } = this.props
     const columns = [
       {
         title: <Trans>Image</Trans>,
@@ -30,7 +34,7 @@ class List extends PureComponent {
         dataIndex: 'nameAr',
         key: 'nameAr',
         render: (text, record) => (
-          <Link to={`service/${record.id}`}>{text}</Link>
+          <Link to={`department/${record.id}`}>{text}</Link>
         ),
       },
       {
@@ -38,7 +42,23 @@ class List extends PureComponent {
         dataIndex: 'nameEn',
         key: 'nameEn',
         render: (text, record) => (
-          <Link to={`service/${record.id}`}>{text}</Link>
+          <Link to={`department/${record.id}`}>{text}</Link>
+        ),
+      },
+      {
+        title: <Trans>Service</Trans>,
+        dataIndex: ['service', 'nameEn'],
+        key: 'service',
+        render: (text, record) => (
+          <Link to={`department/${record.id}`}>{text}</Link>
+        ),
+      },
+      {
+        title: <Trans>Type</Trans>,
+        dataIndex: 'type',
+        key: 'type',
+        render: (text, record) => (
+          <Link to={`department/${record.id}`}>{text}</Link>
         ),
       },
       {
@@ -71,7 +91,7 @@ class List extends PureComponent {
           className={styles.table}
           bordered
           columns={columns}
-          dataSource={services?.list}
+          dataSource={departments?.list}
           simple
           rowKey={(record) => record.id}
         />
