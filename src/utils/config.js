@@ -1,5 +1,5 @@
 module.exports = {
-  siteName: 'AntD Admin',
+  siteName: 'Maintenance',
   copyright: 'Ant Design Admin  ©2020 zuiidea',
   logoPath: '/logo.svg',
   apiUrl: 'https://services7-test-app.herokuapp.com',

@@ -4,7 +4,7 @@
   </a>
 </p>
 
-<h1 align="center">AntD Admin</h1>
+<h1 align="center">Maintenance</h1>
 
 <div align="center">
 
@@ -32,10 +32,9 @@
 - 优雅美观，Ant Design 设计体系
 - Mock 数据，本地数据调试
 
-
 ## 使用
 
-1. 下载项目代码。
+1.  下载项目代码。
 
 ```bash
 git clone https://github.com/zuiidea/antd-admin.git my-project
@@ -62,21 +61,20 @@ npm run start
 
 4. 启动完成后打开浏览器访问 [http://localhost:7000](http://localhost:7000)，如果需要更改启动端口，可在 `.env` 文件中配置。
 
-
 > 更多信息请参考 [使用文档](https://doc.antd-admin.zuiidea.com/#/zh-cn/)。
-
 
 ## 支持环境
 
 现代浏览器。
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
-| --------- | --------- | --------- | --------- | --------- | 
-|IE11, Edge| last 2 versions| last 2 versions| last 2 versions| last 2 versions
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| IE11, Edge                                                                                                                                                                                                      | last 2 versions                                                                                                                                                                                                   | last 2 versions                                                                                                                                                                                               | last 2 versions                                                                                                                                                                                               | last 2 versions                                                                                                                                                                                           |
 
-## 参与贡献  
+## 参与贡献
 
 我们非常欢迎你的贡献，你可以通过以下方式和我们一起共建 :smiley:
+
 - 在你的公司或个人项目中使用 AntD Admin。
 - 通过 [Issue](http://github.com/zuiidea/antd-admin/issues) 报告 bug 或进行咨询。
 - 提交 [Pull Request](http://github.com/zuiidea/antd-admin/pulls) 改进代码。
