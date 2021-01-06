@@ -42,7 +42,33 @@ const database = [
     route: '/categories',
   },
   {
+    id: '31',
+    name: 'Create Category',
+    menuParentId: '-1',
+    breadcrumbParentId: '3',
+    icon: 'user',
+    route: '/categories/create',
+  },
+  {
     id: '4',
+    name: 'Sub Categories',
+    icon: 'user',
+    route: '/sub_categories',
+  },
+  {
+    id: '5',
+    name: 'Parts',
+    icon: 'user',
+    route: '/parts',
+  },
+  {
+    id: '6',
+    name: 'Offers',
+    icon: 'user',
+    route: '/offers',
+  },
+  {
+    id: '7',
     name: 'Users',
     icon: 'user',
     route: '/user',

@@ -23,4 +23,8 @@ export default {
   departmentsList: 'GET /getAllDepartments',
   createDepartment: 'POST /postNewDepartment',
   updateDepartment: 'PUT /updateDepartment ',
+
+  categoriesList: 'GET /getAllCategories',
+  createCategory: 'POST /postNewCategory',
+  updateCategory: 'PUT /updateCategory ',
 }

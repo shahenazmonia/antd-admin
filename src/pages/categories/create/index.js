@@ -5,13 +5,13 @@ import { Row, Col, Button, Form, Input, Select, Spin } from 'antd'
 import { Page } from 'components'
 import { Avatar } from '../../services/components/upload'
 
-@connect(({ departments, loading }) => ({ departments, loading }))
-@connect(({ services }) => ({ services }))
-class CreateDepartment extends Component {
+@connect(({ categories, loading }) => ({ categories, loading }))
+@connect(({ departments }) => ({ departments }))
+class CreateCategory extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
-      type: 'services/list',
+      type: 'departments/list',
       payload: {},
     })
   }
@@ -20,17 +20,16 @@ class CreateDepartment extends Component {
     formData.append('image', this.state.image.file.originFileObj)
     formData.append('nameAr', values.nameAr)
     formData.append('nameEn', values.nameEn)
-    formData.append('type', values.type)
-    formData.append('service', values.service)
+    formData.append('price', values.price)
+    formData.append('department', values.department)
 
     await this.props.dispatch({
-      type: 'departments/create',
+      type: 'categories/create',
       payload: formData,
     })
   }
   render() {
-    const { departments, services, loading } = this.props
-    console.log('departments', departments, services)
+    const { departments, loading } = this.props
     return (
       <div>
         <Page inner>
@@ -65,28 +64,27 @@ class CreateDepartment extends Component {
                     <Input />
                   </Form.Item>
 
-                  <span>Type</span>
+                  <span>Price</span>
                   <Form.Item
-                    name="type"
-                    rules={[{ required: true, message: 'Please enter type' }]}
-                  >
-                    <Select>
-                      <Select.Option value="personal">Personal</Select.Option>
-                      <Select.Option value="commercial">
-                        Commercial
-                      </Select.Option>
-                      <Select.Option value="all">All</Select.Option>
-                    </Select>
-                  </Form.Item>
-                  <span>Service</span>
-                  <Form.Item
-                    name="service"
+                    name="price"
                     rules={[
-                      { required: true, message: 'Please select service' },
+                      {
+                        required: true,
+                        message: 'Please enter the price',
+                      },
+                    ]}
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                  <span>Department</span>
+                  <Form.Item
+                    name="department"
+                    rules={[
+                      { required: true, message: 'Please select a department' },
                     ]}
                   >
                     <Select>
-                      {services?.list?.map((elm, index) => {
+                      {departments?.list?.map((elm, index) => {
                         return (
                           <Select.Option key={index} value={elm._id}>
                             {elm.nameEn}
@@ -110,11 +108,10 @@ class CreateDepartment extends Component {
   }
 }
 
-CreateDepartment.propTypes = {
-  user: PropTypes.object,
+CreateCategory.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
 }
 
-export default CreateDepartment
+export default CreateCategory
