@@ -1,32 +1,22 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'umi'
-import { withI18n } from '@lingui/react'
 import { Page } from 'components'
-import { Row, Col, Button, Form, Input, Select, Upload } from 'antd'
+import { Row, Col, Button, Form, Input, Select } from 'antd'
 import { Avatar } from './upload'
-import { UploadOutlined } from '@ant-design/icons'
 import './list.less'
 
-@withI18n()
 @connect(({ services, loading }) => ({ services, loading }))
 class Service extends Component {
-  onFinish = (values) => {
+  onFinish = async (values) => {
     let formData = new FormData()
-    formData.append('image', this.state.image)
+    formData.append('image', this.state.image.file.originFileObj)
     formData.append('nameAr', values.nameAr)
     formData.append('nameEn', values.nameEn)
-    formData.append('status', values.status)
-    const { dispatch } = this.props
-    // for (var key of formData.entries()) {
-    //   console.log(key[0] + ', ' + key[1])
-    // }
-    // console.log('----', formData.getAll())
-    dispatch({
+    // formData.append('status', values.status)
+    await this.props.dispatch({
       type: 'services/create',
-      payload: {
-        ...formData,
-      },
+      payload: formData,
     })
   }
 

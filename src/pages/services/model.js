@@ -57,7 +57,6 @@ export default modelExtend(pageModel, {
     *create({ payload }, { put, call }) {
       try {
         const data = yield call(createServices, payload)
-        console.log(data)
         if (data.success) {
           yield delay(6000)
           message.success('Service Added Successfuly!')
