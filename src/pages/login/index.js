@@ -15,12 +15,14 @@ const FormItem = Form.Item
 @withI18n()
 @connect(({ loading, dispatch }) => ({ loading, dispatch }))
 class Login extends PureComponent {
-
   render() {
     const { dispatch, loading, i18n } = this.props
-    
-    const handleOk = values => {
-      dispatch({ type: 'login/login', payload: values })
+
+    const handleOk = (values) => {
+      dispatch({
+        type: 'login/login',
+        payload: { ...values },
+      })
     }
     let footerLinks = [
       {
@@ -31,17 +33,6 @@ class Login extends PureComponent {
       },
     ]
 
-    if (config.i18n) {
-      footerLinks = footerLinks.concat(
-        config.i18n.languages.map(item => ({
-          key: item.key,
-          title: (
-            <span onClick={setLocale.bind(null, item.key)}>{item.title}</span>
-          ),
-        }))
-      )
-    }
-
     return (
       <Fragment>
         <div className={styles.form}>
@@ -49,21 +40,16 @@ class Login extends PureComponent {
             <img alt="logo" src={config.logoPath} />
             <span>{config.siteName}</span>
           </div>
-          <Form
-            onFinish={handleOk}
+          <Form onFinish={handleOk}>
+            <FormItem
+              name="phoneNumber"
+              rules={[{ required: true }]}
+              hasFeedback
             >
-            <FormItem name="username" 
-              rules={[{ required: true }]} hasFeedback>
-                <Input
-                  placeholder={i18n.t`Username`}
-                />
+              <Input placeholder="phoneNumber" />
             </FormItem>
-            <FormItem name="password"
-              rules={[{ required: true }]} hasFeedback>
-                <Input
-                  type="password"
-                  placeholder={i18n.t`Password`}
-                />
+            <FormItem name="password" rules={[{ required: true }]} hasFeedback>
+              <Input type="password" placeholder="Password" />
             </FormItem>
             <Row>
               <Button
@@ -73,16 +59,6 @@ class Login extends PureComponent {
               >
                 <Trans>Sign in</Trans>
               </Button>
-              <p>
-                <span className="margin-right">
-                  <Trans>Username</Trans>
-                  ：guest
-                </span>
-                <span>
-                  <Trans>Password</Trans>
-                  ：guest
-                </span>
-              </p>
             </Row>
           </Form>
         </div>

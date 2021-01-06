@@ -1,8 +1,12 @@
 import { history } from 'umi'
-const { pathToRegexp } = require("path-to-regexp")
+
+const { pathToRegexp } = require('path-to-regexp')
 import api from 'api'
+import { message } from 'antd'
+import store from 'store'
 
 const { loginUser } = api
+import axios from 'axios'
 
 export default {
   namespace: 'login',
@@ -16,21 +20,31 @@ export default {
   //     })
   //   },
   // },
+  // },
   effects: {
     *login({ payload }, { put, call, select }) {
-      const data = yield call(loginUser, payload)
-      const { locationQuery } = yield select(_ => _.app)
-      if (data.success) {
-        const { from } = locationQuery
-        yield put({ type: 'app/query' })
-        if (!pathToRegexp('/login').exec(from)) {
-          if (['', '/'].includes(from)) history.push('/dashboard')
-          else history.push(from)
+      try {
+        const data = yield call(loginUser, payload)
+        console.log('data : ', data)
+        const { locationQuery } = yield select((_) => _.app)
+        if (data.success) {
+          const { from } = locationQuery
+          axios.defaults.headers.common.Authorization = data.token
+          store.set('user', data)
+          yield put({ type: 'app/query' })
+          if (!pathToRegexp('/login').exec(from)) {
+            if (['', '/'].includes(from)) history.push('/services')
+            else history.push(from)
+          } else {
+            history.push('/services')
+          }
         } else {
-          history.push('/dashboard')
+          console.log('data : ', data)
+          throw data
         }
-      } else {
-        throw data
+      } catch (error) {
+        console.log('error : ', error.message)
+        message.error(error.message)
       }
     },
   },
