@@ -84,6 +84,14 @@ const database = [
     route: '/offers',
   },
   {
+    id: '61',
+    name: 'Create Offer',
+    menuParentId: '-1',
+    breadcrumbParentId: '6',
+    icon: 'user',
+    route: '/offers/create',
+  },
+  {
     id: '7',
     name: 'Users',
     icon: 'user',

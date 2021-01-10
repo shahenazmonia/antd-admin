@@ -35,4 +35,8 @@ export default {
   partsList: 'GET /getAllParts',
   createPart: 'POST /postNewPart',
   updatePart: 'PUT /updatePart ',
+
+  offersList: 'GET /getAllOffers',
+  createOffer: 'POST /postNewOffer',
+  updateOffer: 'PUT /updateOffer',
 }

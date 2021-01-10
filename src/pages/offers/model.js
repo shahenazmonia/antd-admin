@@ -1,19 +1,17 @@
 /* global window */
 
 import modelExtend from 'dva-model-extend'
-import { pathMatchRegexp } from 'utils'
 import api from 'api'
 import { pageModel } from 'utils/model'
 import { message } from 'antd'
 import { routerRedux } from 'dva/router'
 import { delay } from 'redux-saga'
 import _ from 'lodash'
-import React from 'react'
 
-const { partsList, createPart } = api
+const { offersList, createOffer } = api
 
 export default modelExtend(pageModel, {
-  namespace: 'parts',
+  namespace: 'offers',
 
   state: {
     list: [],
@@ -23,14 +21,14 @@ export default modelExtend(pageModel, {
   },
   effects: {
     *list({ payload }, { put, call }) {
-      const data = yield call(partsList, payload)
+      const data = yield call(offersList, payload)
       if (data.success) {
-        const { parts, partsLength } = data
+        const { offers, offersLength } = data
         yield put({
           type: 'updateState',
           payload: {
-            list: parts,
-            total: partsLength,
+            list: offers,
+            total: offersLength,
           },
         })
       } else {
@@ -50,11 +48,11 @@ export default modelExtend(pageModel, {
     // },
     *create({ payload }, { put, call }) {
       try {
-        const data = yield call(createPart, payload)
+        const data = yield call(createOffer, payload)
         if (data.success) {
           yield delay(6000)
-          message.success('Part has been added successfuly!')
-          yield put(routerRedux.push('/Parts'))
+          message.success('Offer has been added successfuly!')
+          yield put(routerRedux.push('/offers'))
         } else {
           throw data
         }
