@@ -17,12 +17,11 @@ class CreateSubCategory extends Component {
   onFinish = async (values) => {
     await this.props.dispatch({
       type: 'subCategories/create',
-      payload: { ...values },
+      payload: { ...values, duration: parseInt(values.duration) },
     })
   }
   render() {
     const { categories, loading } = this.props
-    console.log('categories', categories)
     return (
       <div>
         <Page inner>
@@ -57,6 +56,7 @@ class CreateSubCategory extends Component {
                   <span>Duration</span>
                   <Form.Item
                     name="duration"
+                    type="number"
                     rules={[
                       { required: true, message: 'Please enter the duration' },
                     ]}
@@ -67,7 +67,7 @@ class CreateSubCategory extends Component {
                   <Form.Item
                     name="category"
                     rules={[
-                      { required: true, message: 'Please select service' },
+                      { required: true, message: 'Please select category' },
                     ]}
                   >
                     <Select>

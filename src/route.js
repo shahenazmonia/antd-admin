@@ -70,6 +70,14 @@ const database = [
     route: '/parts',
   },
   {
+    id: '51',
+    name: 'Create Part',
+    menuParentId: '-1',
+    breadcrumbParentId: '5',
+    icon: 'user',
+    route: '/parts/create',
+  },
+  {
     id: '6',
     name: 'Offers',
     icon: 'user',

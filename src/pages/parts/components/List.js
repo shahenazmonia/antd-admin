@@ -5,21 +5,21 @@ import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
 
-@connect(({ loading, dispatch, categories }) => ({
+@connect(({ loading, dispatch, parts }) => ({
   loading,
   dispatch,
-  categories,
+  parts,
 }))
 class List extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
-      type: 'categories/list',
+      type: 'parts/list',
       payload: {},
     })
   }
   render() {
-    const { categories, loading } = this.props
+    const { parts, loading } = this.props
     const columns = [
       {
         title: <Trans>Image</Trans>,
@@ -29,36 +29,34 @@ class List extends PureComponent {
         render: (text) => <Avatar style={{ marginLeft: 8 }} src={text} />,
       },
       {
-        title: <Trans>Name Ar</Trans>,
+        title: <Trans>name Ar</Trans>,
         dataIndex: 'nameAr',
         key: 'nameAr',
-        render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
-        ),
+        render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
       },
       {
-        title: <Trans>Name En</Trans>,
+        title: <Trans>name En</Trans>,
         dataIndex: 'nameEn',
         key: 'nameEn',
-        render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
-        ),
+        render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
+      },
+      {
+        title: <Trans>Description</Trans>,
+        dataIndex: 'description',
+        key: 'description',
+        render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
       },
       {
         title: <Trans>Price</Trans>,
         dataIndex: 'price',
         key: 'price',
-        render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
-        ),
+        render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
       },
       {
-        title: <Trans>Department</Trans>,
-        dataIndex: ['department', 'nameEn'],
-        key: 'department',
-        render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
-        ),
+        title: <Trans>Category</Trans>,
+        dataIndex: ['category', 'nameEn'],
+        key: 'category',
+        render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
       },
       {
         title: <Trans>Status</Trans>,
@@ -89,7 +87,7 @@ class List extends PureComponent {
           pagination={true}
           bordered
           columns={columns}
-          dataSource={categories?.list}
+          dataSource={parts?.list}
           simple
           rowKey={(record) => record.id}
         />
