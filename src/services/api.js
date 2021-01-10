@@ -27,4 +27,8 @@ export default {
   categoriesList: 'GET /getAllCategories',
   createCategory: 'POST /postNewCategory',
   updateCategory: 'PUT /updateCategory ',
+
+  subCategoriesList: 'GET /getAllSubCategories',
+  createSubCategory: 'POST /postNewSubCategory',
+  updateSubCategory: 'PUT /updateSubCategory ',
 }
