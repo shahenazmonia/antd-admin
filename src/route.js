@@ -93,6 +93,20 @@ const database = [
   },
   {
     id: '7',
+    name: 'Packages',
+    icon: 'user',
+    route: '/packages',
+  },
+  {
+    id: '71',
+    name: 'Create Package',
+    menuParentId: '-1',
+    breadcrumbParentId: '7',
+    icon: 'user',
+    route: '/packages/create',
+  },
+  {
+    id: '8',
     name: 'Users',
     icon: 'user',
     route: '/user',

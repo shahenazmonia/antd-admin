@@ -3,24 +3,23 @@ import PropTypes from 'prop-types'
 import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
-import { connect } from 'umi'
-import moment from 'moment'
+import { Link, connect } from 'umi'
 
-@connect(({ loading, dispatch, offers }) => ({
+@connect(({ loading, dispatch, packages }) => ({
   loading,
   dispatch,
-  offers,
+  packages,
 }))
 class List extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
-      type: 'offers/list',
+      type: 'packages/list',
       payload: {},
     })
   }
   render() {
-    const { offers, loading } = this.props
+    const { packages, loading } = this.props
     const columns = [
       {
         title: <Trans>Image</Trans>,
@@ -33,39 +32,45 @@ class List extends PureComponent {
         title: <Trans>name Ar</Trans>,
         dataIndex: 'nameAr',
         key: 'nameAr',
-        render: (text, record) => <h4>{text}</h4>,
+        render: (text, record) => (
+          <Link to={`package/${record.id}`}>{text}</Link>
+        ),
       },
       {
         title: <Trans>name En</Trans>,
         dataIndex: 'nameEn',
         key: 'nameEn',
-        render: (text, record) => <h4>{text}</h4>,
+        render: (text, record) => (
+          <Link to={`package/${record.id}`}>{text}</Link>
+        ),
       },
       {
         title: <Trans>Description</Trans>,
         dataIndex: 'descriptionEn',
         key: 'description',
-        render: (text, record) => <h4>{text}</h4>,
-      },
-      {
-        title: <Trans>Discount</Trans>,
-        dataIndex: 'discount',
-        key: 'discount',
-        render: (text, record) => <h4>{text}</h4>,
-      },
-      {
-        title: <Trans>Start Date</Trans>,
-        dataIndex: 'startDate',
-        key: 'startDate',
         render: (text, record) => (
-          <h4> {moment(text).format('YYYY-MM-DD')} </h4>
+          <Link to={`package/${record.id}`}>{text}</Link>
         ),
       },
       {
-        title: <Trans>End Date</Trans>,
-        dataIndex: 'endDate',
-        key: 'endDate',
-        render: (text, record) => <h4>{moment(text).format('YYYY-MM-DD')}</h4>,
+        title: <Trans>Type</Trans>,
+        dataIndex: 'type',
+        key: 'type',
+        render: (text, record) => (
+          <Link to={`package/${record.id}`}>{text}</Link>
+        ),
+      },
+      {
+        title: <Trans>Number of visit</Trans>,
+        dataIndex: 'numberOfVisit',
+        key: 'numberOfVisit',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>Duration</Trans>,
+        dataIndex: 'duration',
+        key: 'duration',
+        render: (text, record) => <Link to={``}>{text}</Link>,
       },
       {
         title: <Trans>Status</Trans>,
@@ -96,7 +101,7 @@ class List extends PureComponent {
           pagination={true}
           bordered
           columns={columns}
-          dataSource={offers?.list}
+          dataSource={packages?.list}
           simple
           rowKey={(record) => record.id}
         />

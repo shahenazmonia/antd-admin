@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'umi'
-import { Row, Col, Button, Form, Input, Select, Spin } from 'antd'
+import { Row, Col, Button, Form, Input, Spin } from 'antd'
 import { Page } from 'components'
 import { Avatar } from '../../services/components/upload'
 import './index.less'
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
-@connect(({ parts, loading }) => ({ parts, loading }))
-@connect(({ categories }) => ({ categories }))
-class CreatePart extends Component {
+@connect(({ packages, loading }) => ({ packages, loading }))
+class CreatePackage extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -22,33 +22,34 @@ class CreatePart extends Component {
       nameEn,
       descriptionAr,
       descriptionEn,
-      category,
-      madeIn,
-      SpecificationAr,
-      SpecificationEn,
-      price,
-      size,
+      type,
+      duration,
+      features,
+      discount,
+      basePrice,
+      extraOptions,
     } = values
     let formData = new FormData()
     formData.append('image', this.state.image.file.originFileObj)
     formData.append('nameAr', nameAr)
     formData.append('nameEn', nameEn)
-    formData.append('price', price)
-    formData.append('category', category)
+    formData.append('type', type)
     formData.append('descriptionAr', descriptionAr)
     formData.append('descriptionEn', descriptionEn)
-    formData.append('madeIn', madeIn)
-    formData.append('SpecificationEn', SpecificationEn)
-    formData.append('SpecificationAr', SpecificationAr)
-    formData.append('size', size)
+    formData.append('duration', duration)
+    formData.append('features', features)
+    formData.append('discount', discount)
+    formData.append('basePrice', basePrice)
+    formData.append('extraOption', extraOptions)
 
     await this.props.dispatch({
-      type: 'parts/create',
+      type: 'packages/create',
       payload: formData,
     })
   }
+
   render() {
-    const { categories, loading } = this.props
+    const { loading } = this.props
     return (
       <div>
         <Page inner>
@@ -113,86 +114,132 @@ class CreatePart extends Component {
                       >
                         <Input.TextArea />
                       </Form.Item>
-                      <span>Category</span>
+                      <span>Type</span>
                       <Form.Item
-                        name="category"
-                        rules={[
-                          { required: true, message: 'Please select category' },
-                        ]}
-                      >
-                        <Select>
-                          {categories?.list?.map((elm, index) => {
-                            return (
-                              <Select.Option key={index} value={elm._id}>
-                                {elm.nameEn}
-                              </Select.Option>
-                            )
-                          })}
-                        </Select>
-                      </Form.Item>
-                    </Col>
-                    <Col lg={12} md={12} xs={24} sm={24}>
-                      <span>Made In</span>
-                      <Form.Item
-                        name="madeIn"
+                        name="type"
                         rules={[
                           {
                             required: true,
-                            message: 'Please enter made In',
+                            message: 'Please enter the type',
                           },
                         ]}
                       >
                         <Input />
                       </Form.Item>
-                      <span>Specification En</span>
+                      <span>Base Price</span>
                       <Form.Item
-                        name="SpecificationEn"
+                        name="basePrice"
                         rules={[
                           {
                             required: true,
-                            message: 'Please enter the En. specification',
-                          },
-                        ]}
-                      >
-                        <Input />
-                      </Form.Item>
-                      <span>Specification Ar</span>
-                      <Form.Item
-                        name="SpecificationAr"
-                        rules={[
-                          {
-                            required: true,
-                            message: 'Please enter the Ar. specification',
-                          },
-                        ]}
-                      >
-                        <Input />
-                      </Form.Item>
-                      <span>Price</span>
-                      <Form.Item
-                        name="price"
-                        rules={[
-                          {
-                            required: true,
-                            message: 'Please enter the price',
+                            message: 'Please penter the Base Price',
                           },
                         ]}
                       >
                         <Input type="number" />
                       </Form.Item>
-                      <span>Size</span>
+                    </Col>
+                    <Col lg={12} md={12} xs={24} sm={24}>
+                      <span>Discount</span>
                       <Form.Item
-                        name="size"
+                        name="discount"
+                        rules={[
+                          { required: true, message: 'Please enter discount' },
+                        ]}
+                      >
+                        <Input type="number" />
+                      </Form.Item>
+                      <span>Number Of Visit</span>
+                      <Form.Item
+                        name="numberOfVisit"
                         rules={[
                           {
                             required: true,
-                            message: 'Please enter the size',
+                            message: 'Please enter the number of visit',
+                          },
+                        ]}
+                      >
+                        <Input type="number" />
+                      </Form.Item>
+                      <span>Duration</span>
+                      <Form.Item
+                        name="duration"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'Please enter the duration',
+                          },
+                        ]}
+                      >
+                        <Input type="number" />
+                      </Form.Item>
+
+                      <span>Features</span>
+                      <Form.List name="features">
+                        {(fields, { add, remove }) => (
+                          <>
+                            {fields.map((field) => (
+                              <Row>
+                                <Col span={20}>
+                                  <Form.Item
+                                    {...field}
+                                    name={[field.name, 'arFeature']}
+                                    fieldKey={[field.fieldKey, 'arFeature']}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: 'please enter Ar. feature',
+                                      },
+                                    ]}
+                                  >
+                                    <Input placeholder="Ar. Feature" />
+                                  </Form.Item>
+                                  <Form.Item
+                                    {...field}
+                                    name={[field.name, 'enFeature']}
+                                    fieldKey={[field.fieldKey, 'enFeature']}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: 'please enter En. feature',
+                                      },
+                                    ]}
+                                  >
+                                    <Input placeholder="En. Feature" />
+                                  </Form.Item>
+                                </Col>
+                                <Col span={3} offset={1}>
+                                  <MinusCircleOutlined
+                                    onClick={() => remove(field.name)}
+                                  />
+                                </Col>
+                              </Row>
+                            ))}
+                            <Form.Item>
+                              <Button
+                                type="dashed"
+                                onClick={() => add()}
+                                block
+                                icon={<PlusOutlined />}
+                              >
+                                Add Feature
+                              </Button>
+                            </Form.Item>
+                          </>
+                        )}
+                      </Form.List>
+                      <span>Extra Options</span>
+                      <Form.Item
+                        name="extraOptions"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'Please enter extra option',
                           },
                         ]}
                       >
                         <Input />
                       </Form.Item>
-
                       <Form.Item>
                         <Button type="primary" htmlType="submit">
                           Submit
@@ -210,10 +257,10 @@ class CreatePart extends Component {
   }
 }
 
-CreatePart.propTypes = {
+CreatePackage.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
 }
 
-export default CreatePart
+export default CreatePackage

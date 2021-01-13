@@ -16,7 +16,7 @@ export default {
 
   queryDashboard: '/dashboard',
 
-  servicesList: 'GET /getAllServices',
+  servicesList: 'GET /getAllServicesAdmin',
   createServices: 'POST /postNewService',
   updateServices: 'PUT /updateService ',
 
@@ -36,7 +36,11 @@ export default {
   createPart: 'POST /postNewPart',
   updatePart: 'PUT /updatePart ',
 
-  offersList: 'GET /getAllOffers',
+  offersList: 'GET /getAllOffersAdmin',
   createOffer: 'POST /postNewOffer',
   updateOffer: 'PUT /updateOffer',
+
+  packagesList: 'GET /getAllPackagesAdmin',
+  createPackage: 'POST /postNewPackage',
+  updatePackage: 'PUT /updatePackage',
 }

@@ -95,7 +95,7 @@ class CreatePart extends Component {
                           },
                         ]}
                       >
-                        <Input />
+                        <Input.TextArea />
                       </Form.Item>
                       <span>Description En</span>
                       <Form.Item
@@ -107,7 +107,7 @@ class CreatePart extends Component {
                           },
                         ]}
                       >
-                        <Input />
+                        <Input.TextArea />
                       </Form.Item>
                     </Col>
                     <Col lg={12} md={12} xs={24} sm={24}>
