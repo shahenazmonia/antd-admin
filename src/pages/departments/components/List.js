@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
-import { Link, connect } from 'umi'
+import { history, Link, connect } from 'umi'
 import styles from './List.less'
 
 @connect(({ loading, dispatch, departments }) => ({
@@ -19,6 +19,21 @@ class List extends PureComponent {
       payload: {},
     })
   }
+
+  handleMenuClick = (record, e) => {
+    const { dispatch } = this.props
+    const { key } = e
+    if (key === '1') {
+      console.log('update', this.props)
+      history.push({ pathname: `/departments/update/${record._id}` })
+    } else if (key === '2') {
+      dispatch({
+        type: 'departments/delete',
+        payload: { id: record._id },
+      })
+    }
+  }
+
   render() {
     const { departments, loading } = this.props
     const columns = [
@@ -85,7 +100,7 @@ class List extends PureComponent {
     ]
 
     return (
-      <Spin spinning={loading?.global}>
+      <Spin spinning={loading?.models?.departments}>
         <Table
           pagination={true}
           className={styles.table}

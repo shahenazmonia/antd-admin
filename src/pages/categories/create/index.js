@@ -33,7 +33,7 @@ class CreateCategory extends Component {
     return (
       <div>
         <Page inner>
-          <Spin spinning={loading?.global}>
+          <Spin spinning={loading?.models?.departments}>
             <Row justify="center">
               <Col lg={12} md={12} xs={24} sm={24}>
                 <Form

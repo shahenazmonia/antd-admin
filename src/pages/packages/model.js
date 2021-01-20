@@ -8,7 +8,7 @@ import { routerRedux } from 'dva/router'
 import { delay } from 'redux-saga'
 import _ from 'lodash'
 
-const { packagesList, createPackage } = api
+const { packagesList, createPackage, deletePackage } = api
 
 export default modelExtend(pageModel, {
   namespace: 'packages',
@@ -35,17 +35,17 @@ export default modelExtend(pageModel, {
         throw data
       }
     },
-    // *toggleClients({ payload }, { put, call }) {
-    //   const data = yield call(toggleClientsStatus, payload)
-    //   if (data.success) {
-    //     yield put({
-    //       type: 'toggleEnableDisableClients',
-    //       payload: data.data,
-    //     })
-    //   } else {
-    //     throw data
-    //   }
-    // },
+    *delete({ payload }, { put, call }) {
+      const data = yield call(deletePackage, payload)
+      if (data.success) {
+        yield put({
+          type: 'deleteFromList',
+          payload: data.data.result,
+        })
+      } else {
+        throw data
+      }
+    },
     *create({ payload }, { put, call }) {
       try {
         const data = yield call(createPackage, payload)
@@ -106,23 +106,16 @@ export default modelExtend(pageModel, {
     // },
   },
   reducers: {
-    // toggleEnableDisableClients(state, { payload }) {
-    //   const newState = JSON.parse(JSON.stringify(state))
-    //   const { list } = newState
-    //   const newList =
-    //     list &&
-    //     _.isArray(list) &&
-    //     list.map((row) => {
-    //       if (row.objectID === payload.objectID) {
-    //         row.status = payload.status
-    //       }
-    //       return row
-    //     })
-    //   return {
-    //     ...state,
-    //     list: newList,
-    //   }
-    // },
+    deleteFromList(state, { payload }) {
+      const newState = JSON.parse(JSON.stringify(state))
+      const { list } = newState
+      const newList =
+        list && _.isArray(list) && list.filter((row) => row._id !== payload.id)
+      return {
+        ...state,
+        list: newList,
+      }
+    },
     updateState(state, { payload }) {
       return {
         ...state,

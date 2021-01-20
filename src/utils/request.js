@@ -22,7 +22,6 @@ export default function request(options) {
 
     const match = parse(url)
     url = compile(url)(data)
-
     for (const item of match) {
       if (item instanceof Object && item.name in cloneData) {
         delete cloneData[item.name]

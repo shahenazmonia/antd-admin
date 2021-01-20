@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'umi'
-import { withI18n } from '@lingui/react'
-import { Page } from 'components'
 import Service from '../components/Service'
 
-@withI18n()
 @connect(({ services, loading }) => ({ services, loading }))
 class CreateService extends Component {
   render() {

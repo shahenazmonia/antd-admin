@@ -1,16 +1,14 @@
 /* global window */
 
 import modelExtend from 'dva-model-extend'
-import { pathMatchRegexp } from 'utils'
 import api from 'api'
 import { pageModel } from 'utils/model'
 import { message } from 'antd'
 import { routerRedux } from 'dva/router'
 import { delay } from 'redux-saga'
 import _ from 'lodash'
-import React from 'react'
 
-const { subCategoriesList, createSubCategory } = api
+const { subCategoriesList, createSubCategory, deleteSubCategory } = api
 
 export default modelExtend(pageModel, {
   namespace: 'subCategories',
@@ -54,12 +52,23 @@ export default modelExtend(pageModel, {
         if (data.success) {
           yield delay(6000)
           message.success('Sub Category has been added successfuly!')
-          yield put(routerRedux.push('/subCategories'))
+          yield put(routerRedux.push('/sub_categories'))
         } else {
           throw data
         }
       } catch (error) {
         console.log(error)
+      }
+    },
+    *delete({ payload }, { put, call }) {
+      const data = yield call(deleteSubCategory, payload)
+      if (data.success) {
+        yield put({
+          type: 'deleteFromList',
+          payload: data.data.result,
+        })
+      } else {
+        throw data
       }
     },
     // *update({ payload }, { put, call }) {
@@ -108,23 +117,16 @@ export default modelExtend(pageModel, {
     // },
   },
   reducers: {
-    // toggleEnableDisableClients(state, { payload }) {
-    //   const newState = JSON.parse(JSON.stringify(state))
-    //   const { list } = newState
-    //   const newList =
-    //     list &&
-    //     _.isArray(list) &&
-    //     list.map((row) => {
-    //       if (row.objectID === payload.objectID) {
-    //         row.status = payload.status
-    //       }
-    //       return row
-    //     })
-    //   return {
-    //     ...state,
-    //     list: newList,
-    //   }
-    // },
+    deleteFromList(state, { payload }) {
+      const newState = JSON.parse(JSON.stringify(state))
+      const { list } = newState
+      const newList =
+        list && _.isArray(list) && list.filter((row) => row._id !== payload.id)
+      return {
+        ...state,
+        list: newList,
+      }
+    },
     updateState(state, { payload }) {
       return {
         ...state,

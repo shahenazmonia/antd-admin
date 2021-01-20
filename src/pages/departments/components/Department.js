@@ -3,29 +3,46 @@ import PropTypes from 'prop-types'
 import { connect } from 'umi'
 import { Row, Col, Button, Form, Input, Select, Spin } from 'antd'
 import { Page } from 'components'
+import { Avatar } from '../../services/components/upload'
 
-@connect(({ subCategories, loading }) => ({ subCategories, loading }))
-@connect(({ categories }) => ({ categories }))
-class CreateSubCategory extends Component {
+@connect(({ departments, loading }) => ({ departments, loading }))
+@connect(({ services }) => ({ services }))
+class Department extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
-      type: 'categories/list',
+      type: 'services/list',
       payload: {},
     })
   }
   onFinish = async (values) => {
-    await this.props.dispatch({
-      type: 'subCategories/create',
-      payload: { ...values, duration: parseInt(values.duration) },
-    })
+    let formData = new FormData()
+    const { dispatch, id } = this.props
+    formData.append('image', this.state.image.file.originFileObj)
+    formData.append('nameAr', values.nameAr)
+    formData.append('nameEn', values.nameEn)
+    formData.append('type', values.type)
+    formData.append('service', values.service)
+    if (id) {
+      formData.append('id', id)
+      await dispatch({
+        type: 'departments/update',
+        payload: formData,
+      })
+    } else {
+      await dispatch({
+        type: 'departments/create',
+        payload: formData,
+      })
+    }
   }
+
   render() {
-    const { categories, loading } = this.props
+    const { services, loading } = this.props
     return (
       <div>
         <Page inner>
-          <Spin spinning={loading?.models?.categories}>
+          <Spin spinning={loading?.models?.services}>
             <Row justify="center">
               <Col lg={12} md={12} xs={24} sm={24}>
                 <Form
@@ -34,6 +51,9 @@ class CreateSubCategory extends Component {
                   onFinish={this.onFinish}
                   onFinishFailed={this.onFinishFailed}
                 >
+                  <Form.Item name="image">
+                    <Avatar getImage={(image) => this.setState({ image })} />
+                  </Form.Item>
                   <span>Name Ar</span>
                   <Form.Item
                     name="nameAr"
@@ -53,25 +73,28 @@ class CreateSubCategory extends Component {
                     <Input />
                   </Form.Item>
 
-                  <span>Duration</span>
+                  <span>Type</span>
                   <Form.Item
-                    name="duration"
-                    type="number"
-                    rules={[
-                      { required: true, message: 'Please enter the duration' },
-                    ]}
+                    name="type"
+                    rules={[{ required: true, message: 'Please enter type' }]}
                   >
-                    <Input type="number" />
+                    <Select>
+                      <Select.Option value="personal">Personal</Select.Option>
+                      <Select.Option value="commercial">
+                        Commercial
+                      </Select.Option>
+                      <Select.Option value="all">All</Select.Option>
+                    </Select>
                   </Form.Item>
-                  <span>Category</span>
+                  <span>Service</span>
                   <Form.Item
-                    name="category"
+                    name="service"
                     rules={[
-                      { required: true, message: 'Please select category' },
+                      { required: true, message: 'Please select service' },
                     ]}
                   >
                     <Select>
-                      {categories?.list?.map((elm, index) => {
+                      {services?.list?.map((elm, index) => {
                         return (
                           <Select.Option key={index} value={elm._id}>
                             {elm.nameEn}
@@ -95,10 +118,11 @@ class CreateSubCategory extends Component {
   }
 }
 
-CreateSubCategory.propTypes = {
+Department.propTypes = {
+  user: PropTypes.object,
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
 }
 
-export default CreateSubCategory
+export default Department

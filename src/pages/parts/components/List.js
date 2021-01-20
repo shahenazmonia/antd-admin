@@ -5,9 +5,8 @@ import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
 
-@connect(({ loading, dispatch, parts }) => ({
+@connect(({ loading, parts }) => ({
   loading,
-  dispatch,
   parts,
 }))
 class List extends PureComponent {
@@ -18,6 +17,20 @@ class List extends PureComponent {
       payload: {},
     })
   }
+
+  handleMenuClick = (record, e) => {
+    const { dispatch } = this.props
+    const { key } = e
+    if (key === '1') {
+      // history.push({ pathname: `/departments/update/${record._id}` })
+    } else if (key === '2') {
+      dispatch({
+        type: 'parts/delete',
+        payload: { id: record._id },
+      })
+    }
+  }
+
   render() {
     const { parts, loading } = this.props
     const columns = [
@@ -82,7 +95,7 @@ class List extends PureComponent {
     ]
 
     return (
-      <Spin spinning={loading?.global}>
+      <Spin spinning={loading?.models.parts}>
         <Table
           pagination={true}
           bordered

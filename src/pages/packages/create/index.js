@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'umi'
-import { Row, Col, Button, Form, Input, Spin } from 'antd'
+import { Row, Col, Button, Form, Input, Spin, Select } from 'antd'
 import { Page } from 'components'
 import { Avatar } from '../../services/components/upload'
 import './index.less'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 @connect(({ packages, loading }) => ({ packages, loading }))
+@connect(({ categories }) => ({ categories }))
 class CreatePackage extends Component {
   componentDidMount() {
     const { dispatch } = this.props
@@ -27,7 +28,7 @@ class CreatePackage extends Component {
       features,
       discount,
       basePrice,
-      extraOptions,
+      numberOfVisits,
     } = values
     let formData = new FormData()
     formData.append('image', this.state.image.file.originFileObj)
@@ -40,7 +41,7 @@ class CreatePackage extends Component {
     formData.append('features', features)
     formData.append('discount', discount)
     formData.append('basePrice', basePrice)
-    formData.append('extraOption', extraOptions)
+    formData.append('numberOfVisits', numberOfVisits)
 
     await this.props.dispatch({
       type: 'packages/create',
@@ -49,7 +50,7 @@ class CreatePackage extends Component {
   }
 
   render() {
-    const { loading } = this.props
+    const { categories, loading } = this.props
     return (
       <div>
         <Page inner>
@@ -151,7 +152,7 @@ class CreatePackage extends Component {
                       </Form.Item>
                       <span>Number Of Visit</span>
                       <Form.Item
-                        name="numberOfVisit"
+                        name="numberOfVisits"
                         rules={[
                           {
                             required: true,
@@ -183,29 +184,60 @@ class CreatePackage extends Component {
                                 <Col span={20}>
                                   <Form.Item
                                     {...field}
-                                    name={[field.name, 'arFeature']}
-                                    fieldKey={[field.fieldKey, 'arFeature']}
+                                    name={[field.name, 'category']}
+                                    fieldKey={[field.fieldKey, 'category']}
                                     rules={[
                                       {
                                         required: true,
-                                        message: 'please enter Ar. feature',
+                                        message: 'please select category',
                                       },
                                     ]}
                                   >
-                                    <Input placeholder="Ar. Feature" />
+                                    <Select placeholder="Category">
+                                      {categories?.list?.map((elm, index) => {
+                                        return (
+                                          <Select.Option
+                                            key={index}
+                                            value={elm._id}
+                                          >
+                                            {elm.nameEn}
+                                          </Select.Option>
+                                        )
+                                      })}
+                                    </Select>
                                   </Form.Item>
                                   <Form.Item
                                     {...field}
-                                    name={[field.name, 'enFeature']}
-                                    fieldKey={[field.fieldKey, 'enFeature']}
+                                    name={[field.name, 'price']}
+                                    fieldKey={[field.fieldKey, 'price']}
                                     rules={[
                                       {
                                         required: true,
-                                        message: 'please enter En. feature',
+                                        message: 'please enter the price',
                                       },
                                     ]}
                                   >
-                                    <Input placeholder="En. Feature" />
+                                    <Input placeholder="Price" type="number" />
+                                  </Form.Item>
+                                  <Form.Item
+                                    {...field}
+                                    name={[field.name, 'numberOfVisits']}
+                                    fieldKey={[
+                                      field.fieldKey,
+                                      'numberOfVisits',
+                                    ]}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message:
+                                          'please enter the numberOfVisits',
+                                      },
+                                    ]}
+                                  >
+                                    <Input
+                                      placeholder="Number Of Visits"
+                                      type="number"
+                                    />
                                   </Form.Item>
                                 </Col>
                                 <Col span={3} offset={1}>
@@ -228,18 +260,6 @@ class CreatePackage extends Component {
                           </>
                         )}
                       </Form.List>
-                      <span>Extra Options</span>
-                      <Form.Item
-                        name="extraOptions"
-                        rules={[
-                          {
-                            required: true,
-                            message: 'Please enter extra option',
-                          },
-                        ]}
-                      >
-                        <Input />
-                      </Form.Item>
                       <Form.Item>
                         <Button type="primary" htmlType="submit">
                           Submit

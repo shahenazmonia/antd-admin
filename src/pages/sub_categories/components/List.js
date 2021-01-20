@@ -18,6 +18,20 @@ class List extends PureComponent {
       payload: {},
     })
   }
+
+  handleMenuClick = (record, e) => {
+    const { dispatch } = this.props
+    const { key } = e
+    if (key === '1') {
+      // history.push({ pathname: `/sub_categories/update/${record._id}` })
+    } else if (key === '2') {
+      dispatch({
+        type: 'subCategories/delete',
+        payload: { id: record._id },
+      })
+    }
+  }
+
   render() {
     const { subCategories, loading } = this.props
     const columns = [
@@ -77,7 +91,7 @@ class List extends PureComponent {
     ]
 
     return (
-      <Spin spinning={loading?.global}>
+      <Spin spinning={loading?.models?.subCategories}>
         <Table
           pagination={true}
           bordered

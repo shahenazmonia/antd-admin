@@ -4,19 +4,17 @@ import { connect } from 'umi'
 import { Button, Row, Input, Form } from 'antd'
 import { GlobalFooter } from 'components'
 import { GithubOutlined } from '@ant-design/icons'
-import { Trans, withI18n } from '@lingui/react'
-import { setLocale } from 'utils'
+import { Trans } from '@lingui/react'
 import config from 'utils/config'
 
 import styles from './index.less'
 
 const FormItem = Form.Item
 
-@withI18n()
-@connect(({ loading, dispatch }) => ({ loading, dispatch }))
+@connect(({ loading }) => ({ loading }))
 class Login extends PureComponent {
   render() {
-    const { dispatch, loading, i18n } = this.props
+    const { dispatch, loading } = this.props
 
     const handleOk = (values) => {
       dispatch({

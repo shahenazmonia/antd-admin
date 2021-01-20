@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
-import { Link, connect } from 'umi'
+import { history, Link, connect } from 'umi'
+
 import styles from './List.less'
 
-@connect(({ loading, dispatch, services }) => ({ loading, dispatch, services }))
+@connect(({ loading, services }) => ({ loading, services }))
 class List extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props
@@ -14,6 +15,20 @@ class List extends PureComponent {
       type: 'services/list',
       payload: {},
     })
+  }
+
+  handleMenuClick = (record, e) => {
+    const { dispatch } = this.props
+    const { key } = e
+    if (key === '1') {
+      console.log('update', this.props)
+      history.push({ pathname: `/services/update/${record._id}` })
+    } else if (key === '2') {
+      dispatch({
+        type: 'services/delete',
+        payload: { id: record._id },
+      })
+    }
   }
   render() {
     const { services, loading } = this.props

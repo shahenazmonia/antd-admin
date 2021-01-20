@@ -8,7 +8,7 @@ import { routerRedux } from 'dva/router'
 import { delay } from 'redux-saga'
 import _ from 'lodash'
 
-const { offersList, createOffer } = api
+const { offersList, createOffer, deleteOffer } = api
 
 export default modelExtend(pageModel, {
   namespace: 'offers',
@@ -46,6 +46,17 @@ export default modelExtend(pageModel, {
     //     throw data
     //   }
     // },
+    *delete({ payload }, { put, call }) {
+      const data = yield call(deleteOffer, payload)
+      if (data.success) {
+        yield put({
+          type: 'deleteFromList',
+          payload: data.data.result,
+        })
+      } else {
+        throw data
+      }
+    },
     *create({ payload }, { put, call }) {
       try {
         const data = yield call(createOffer, payload)
@@ -106,23 +117,6 @@ export default modelExtend(pageModel, {
     // },
   },
   reducers: {
-    // toggleEnableDisableClients(state, { payload }) {
-    //   const newState = JSON.parse(JSON.stringify(state))
-    //   const { list } = newState
-    //   const newList =
-    //     list &&
-    //     _.isArray(list) &&
-    //     list.map((row) => {
-    //       if (row.objectID === payload.objectID) {
-    //         row.status = payload.status
-    //       }
-    //       return row
-    //     })
-    //   return {
-    //     ...state,
-    //     list: newList,
-    //   }
-    // },
     updateState(state, { payload }) {
       return {
         ...state,

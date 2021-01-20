@@ -19,7 +19,7 @@ const database = [
     menuParentId: '-1',
     breadcrumbParentId: '1',
     icon: 'user',
-    route: '/services/update',
+    route: '/services/update/:id',
   },
   {
     id: '2',
@@ -34,6 +34,14 @@ const database = [
     breadcrumbParentId: '2',
     icon: 'user',
     route: '/departments/create',
+  },
+  {
+    id: '22',
+    name: 'Update Department',
+    menuParentId: '-1',
+    breadcrumbParentId: '2',
+    icon: 'user',
+    route: '/departments/update/:id',
   },
   {
     id: '3',

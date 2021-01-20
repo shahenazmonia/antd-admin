@@ -5,9 +5,8 @@ import { message } from 'antd'
 import { routerRedux } from 'dva/router'
 import { delay } from 'redux-saga'
 import _ from 'lodash'
-import React from 'react'
 
-const { categoriesList, createCategory } = api
+const { categoriesList, createCategory, deleteCategory } = api
 
 export default modelExtend(pageModel, {
   namespace: 'categories',
@@ -59,6 +58,17 @@ export default modelExtend(pageModel, {
         console.log(error)
       }
     },
+    *delete({ payload }, { put, call }) {
+      const data = yield call(deleteCategory, payload)
+      if (data.success) {
+        yield put({
+          type: 'deleteFromList',
+          payload: data.data.result,
+        })
+      } else {
+        throw data
+      }
+    },
     // *update({ payload }, { put, call }) {
     //   try {
     //     const data = yield call(updateServices, payload)
@@ -105,23 +115,16 @@ export default modelExtend(pageModel, {
     // },
   },
   reducers: {
-    // toggleEnableDisableClients(state, { payload }) {
-    //   const newState = JSON.parse(JSON.stringify(state))
-    //   const { list } = newState
-    //   const newList =
-    //     list &&
-    //     _.isArray(list) &&
-    //     list.map((row) => {
-    //       if (row.objectID === payload.objectID) {
-    //         row.status = payload.status
-    //       }
-    //       return row
-    //     })
-    //   return {
-    //     ...state,
-    //     list: newList,
-    //   }
-    // },
+    deleteFromList(state, { payload }) {
+      const newState = JSON.parse(JSON.stringify(state))
+      const { list } = newState
+      const newList =
+        list && _.isArray(list) && list.filter((row) => row._id !== payload.id)
+      return {
+        ...state,
+        list: newList,
+      }
+    },
     updateState(state, { payload }) {
       return {
         ...state,

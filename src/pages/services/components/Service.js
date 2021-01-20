@@ -9,15 +9,23 @@ import './list.less'
 @connect(({ services, loading }) => ({ services, loading }))
 class Service extends Component {
   onFinish = async (values) => {
+    const { id, dispatch } = this.props
     let formData = new FormData()
     formData.append('image', this.state.image.file.originFileObj)
     formData.append('nameAr', values.nameAr)
     formData.append('nameEn', values.nameEn)
-    // formData.append('status', values.status)
-    await this.props.dispatch({
-      type: 'services/create',
-      payload: formData,
-    })
+    if (id) {
+      formData.append('id', id)
+      await dispatch({
+        type: 'services/update',
+        payload: formData,
+      })
+    } else {
+      await dispatch({
+        type: 'services/create',
+        payload: formData,
+      })
+    }
   }
 
   onFinishFailed = (errorInfo) => {
@@ -82,7 +90,7 @@ class Service extends Component {
 }
 
 Service.propTypes = {
-  user: PropTypes.object,
+  history: PropTypes.object,
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
