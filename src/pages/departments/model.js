@@ -61,7 +61,7 @@ export default modelExtend(pageModel, {
         if (data.success) {
           yield delay(6000)
           message.success('Department has been updated successfully')
-          yield put(routerRedux.push('/services'))
+          yield put(routerRedux.push('/departments'))
         } else {
           throw data
         }
