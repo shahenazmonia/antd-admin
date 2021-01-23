@@ -8,13 +8,7 @@ import { routerRedux } from 'dva/router'
 import { delay } from 'redux-saga'
 import _ from 'lodash'
 
-const {
-  servicesList,
-  createServices,
-  deleteService,
-  updateServices,
-  getService,
-} = api
+const { servicesList, createServices, deleteService, updateServices } = api
 
 export default modelExtend(pageModel, {
   namespace: 'services',
@@ -72,7 +66,7 @@ export default modelExtend(pageModel, {
         if (data.success) {
           yield delay(6000)
           message.success('Service has been updated successfully')
-          yield put(routerRedux.push('/services'))
+          window.location.reload()
         } else {
           throw data
         }

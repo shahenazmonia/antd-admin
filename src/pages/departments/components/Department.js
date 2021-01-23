@@ -17,14 +17,17 @@ class Department extends Component {
   }
   onFinish = async (values) => {
     let formData = new FormData()
-    const { dispatch, id } = this.props
+    const { dispatch, data, services } = this.props
     formData.append('image', this.state.image.file.originFileObj)
     formData.append('nameAr', values.nameAr)
     formData.append('nameEn', values.nameEn)
     formData.append('type', values.type)
-    formData.append('service', values.service)
-    if (id) {
-      formData.append('id', id)
+    const name = services.list.filter((elm) => {
+      if (values.service == elm.nameEn) return elm._id
+    })
+    formData.append('service', name[0] ? name[0]._id : values.service)
+    if (data) {
+      formData.append('id', data._id)
       await dispatch({
         type: 'departments/update',
         payload: formData,
@@ -38,7 +41,7 @@ class Department extends Component {
   }
 
   render() {
-    const { services, loading } = this.props
+    const { services, loading, data } = this.props
     return (
       <div>
         <Page inner>
@@ -52,11 +55,15 @@ class Department extends Component {
                   onFinishFailed={this.onFinishFailed}
                 >
                   <Form.Item name="image">
-                    <Avatar getImage={(image) => this.setState({ image })} />
+                    <Avatar
+                      image={data?.image}
+                      getImage={(image) => this.setState({ image })}
+                    />
                   </Form.Item>
                   <span>Name Ar</span>
                   <Form.Item
                     name="nameAr"
+                    initialValue={data?.nameAr}
                     rules={[
                       { required: true, message: 'Please enter Ar. name' },
                     ]}
@@ -66,6 +73,7 @@ class Department extends Component {
                   <span>Name En</span>
                   <Form.Item
                     name="nameEn"
+                    initialValue={data?.nameEn}
                     rules={[
                       { required: true, message: 'Please enter En. name' },
                     ]}
@@ -76,6 +84,7 @@ class Department extends Component {
                   <span>Type</span>
                   <Form.Item
                     name="type"
+                    initialValue={data?.type}
                     rules={[{ required: true, message: 'Please enter type' }]}
                   >
                     <Select>
@@ -89,6 +98,7 @@ class Department extends Component {
                   <span>Service</span>
                   <Form.Item
                     name="service"
+                    initialValue={data?.service?.nameEn}
                     rules={[
                       { required: true, message: 'Please select service' },
                     ]}

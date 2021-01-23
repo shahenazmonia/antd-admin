@@ -20,12 +20,10 @@ export default {
   createServices: 'POST /postNewService',
   updateServices: 'PUT /updateService',
   deleteService: 'DELETE /deleteService/:id',
-  getService: 'GET ',
 
   departmentsList: 'GET /getAllDepartments',
   createDepartment: 'POST /postNewDepartment',
   updateDepartment: 'PUT /updateDepartment',
-  getDepartment: 'GET /getDepartmentById/:id',
   deleteDepartment: 'DELETE /deleteDepartment/:id',
 
   categoriesList: 'GET /getAllCategories',

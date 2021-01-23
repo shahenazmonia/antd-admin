@@ -48,6 +48,7 @@ export class Avatar extends React.Component {
 
   render() {
     const { loading, imageUrl } = this.state
+    const { image } = this.props
     const uploadButton = (
       <div>
         {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -65,7 +66,11 @@ export class Avatar extends React.Component {
         onChange={this.handleChange}
       >
         {imageUrl ? (
-          <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+          <img
+            src={imageUrl ? imageUrl : image}
+            alt="avatar"
+            style={{ width: '100%' }}
+          />
         ) : (
           uploadButton
         )}

@@ -11,7 +11,6 @@ import _ from 'lodash'
 const {
   departmentsList,
   createDepartment,
-  getDepartment,
   updateDepartment,
   deleteDepartment,
 } = api
@@ -61,7 +60,7 @@ export default modelExtend(pageModel, {
         if (data.success) {
           yield delay(6000)
           message.success('Department has been updated successfully')
-          yield put(routerRedux.push('/departments'))
+          window.location.reload()
         } else {
           throw data
         }
@@ -92,20 +91,6 @@ export default modelExtend(pageModel, {
         yield put({
           type: 'deleteFromList',
           payload: data.data.result,
-        })
-      } else {
-        throw data
-      }
-    },
-    *details({ payload }, { put, call }) {
-      console.log('payload', payload)
-      const data = yield call(getDepartment, payload)
-      if (data.success) {
-        yield put({
-          type: 'updateState',
-          payload: {
-            details: data.data,
-          },
         })
       } else {
         throw data

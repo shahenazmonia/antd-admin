@@ -5,6 +5,7 @@ import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { history, Link, connect } from 'umi'
 import styles from './List.less'
+import UpdateDepartment from '../update'
 
 @connect(({ loading, dispatch, departments }) => ({
   loading,
@@ -12,6 +13,9 @@ import styles from './List.less'
   departments,
 }))
 class List extends PureComponent {
+  state = {
+    updateFlag: false,
+  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -24,8 +28,13 @@ class List extends PureComponent {
     const { dispatch } = this.props
     const { key } = e
     if (key === '1') {
-      console.log('update', this.props)
-      history.push({ pathname: `/departments/update/${record._id}` })
+      // history.push({
+      //   pathname: `/departments/update/${JSON.stringify(record)}`,
+      // })
+      this.setState({
+        updateFlag: true,
+        data: record,
+      })
     } else if (key === '2') {
       dispatch({
         type: 'departments/delete',
@@ -98,19 +107,25 @@ class List extends PureComponent {
         },
       },
     ]
-
+    const { updateFlag, data } = this.state
     return (
-      <Spin spinning={loading?.models?.departments}>
-        <Table
-          pagination={true}
-          className={styles.table}
-          bordered
-          columns={columns}
-          dataSource={departments?.list}
-          simple
-          rowKey={(record) => record.id}
-        />
-      </Spin>
+      <>
+        <Spin spinning={loading?.models?.departments}>
+          {updateFlag ? (
+            <UpdateDepartment data={data} />
+          ) : (
+            <Table
+              pagination={true}
+              className={styles.table}
+              bordered
+              columns={columns}
+              dataSource={departments?.list}
+              simple
+              rowKey={(record) => record.id}
+            />
+          )}
+        </Spin>
+      </>
     )
   }
 }
