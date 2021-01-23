@@ -1,21 +1,24 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'umi'
 import Category from '../components/Category'
 
-class CreateCategory extends Component {
+@connect(({ loading, categories }) => ({ loading, categories }))
+class UpdateCategory extends Component {
   render() {
+    const { data } = this.props
     return (
       <div>
-        <Category />
+        <Category data={data} />
       </div>
     )
   }
 }
 
-CreateCategory.propTypes = {
+UpdateCategory.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
 }
 
-export default CreateCategory
+export default UpdateCategory

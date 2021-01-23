@@ -25,11 +25,11 @@ export default modelExtend(pageModel, {
     *list({ payload }, { put, call }) {
       const data = yield call(partsList, payload)
       if (data.success) {
-        const { parts, partsLength } = data
+        const { Parts, partsLength } = data
         yield put({
           type: 'updateState',
           payload: {
-            list: parts,
+            list: Parts,
             total: partsLength,
           },
         })
@@ -37,17 +37,6 @@ export default modelExtend(pageModel, {
         throw data
       }
     },
-    // *toggleClients({ payload }, { put, call }) {
-    //   const data = yield call(toggleClientsStatus, payload)
-    //   if (data.success) {
-    //     yield put({
-    //       type: 'toggleEnableDisableClients',
-    //       payload: data.data,
-    //     })
-    //   } else {
-    //     throw data
-    //   }
-    // },
     *create({ payload }, { put, call }) {
       try {
         const data = yield call(createPart, payload)

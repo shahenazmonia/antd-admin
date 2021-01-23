@@ -4,12 +4,16 @@ import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
+import UpdateCategory from '../update'
 
 @connect(({ loading, categories }) => ({
   loading,
   categories,
 }))
 class List extends PureComponent {
+  state = {
+    updateFlag: false,
+  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -22,7 +26,10 @@ class List extends PureComponent {
     const { dispatch } = this.props
     const { key } = e
     if (key === '1') {
-      // history.push({ pathname: `/departments/update/${record._id}` })
+      this.setState({
+        updateFlag: true,
+        data: record,
+      })
     } else if (key === '2') {
       dispatch({
         type: 'categories/delete',
@@ -95,17 +102,21 @@ class List extends PureComponent {
         },
       },
     ]
-
+    const { updateFlag, data } = this.state
     return (
       <Spin spinning={loading?.models?.categories}>
-        <Table
-          pagination={true}
-          bordered
-          columns={columns}
-          dataSource={categories?.list}
-          simple
-          rowKey={(record) => record.id}
-        />
+        {updateFlag ? (
+          <UpdateCategory data={data} />
+        ) : (
+          <Table
+            pagination={true}
+            bordered
+            columns={columns}
+            dataSource={categories?.list}
+            simple
+            rowKey={(record) => record.id}
+          />
+        )}
       </Spin>
     )
   }

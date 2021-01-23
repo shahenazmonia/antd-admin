@@ -22,10 +22,13 @@ class Department extends Component {
     formData.append('nameAr', values.nameAr)
     formData.append('nameEn', values.nameEn)
     formData.append('type', values.type)
-    const name = services.list.filter((elm) => {
+    const currentValue = services.list.filter((elm) => {
       if (values.service == elm.nameEn) return elm._id
     })
-    formData.append('service', name[0] ? name[0]._id : values.service)
+    formData.append(
+      'service',
+      currentValue[0] ? currentValue[0]._id : values.service
+    )
     if (data) {
       formData.append('id', data._id)
       await dispatch({
