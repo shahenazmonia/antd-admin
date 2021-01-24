@@ -38,7 +38,7 @@ export default {
 
   partsList: 'GET /getAllParts',
   createPart: 'POST /postNewPart',
-  updatePart: 'PUT /updatePart ',
+  updatePart: 'PUT /updatePart',
   deletePart: 'DELETE /deletePart/:id',
 
   offersList: 'GET /getAllOffersAdmin',

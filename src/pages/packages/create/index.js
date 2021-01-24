@@ -31,6 +31,8 @@ class CreatePackage extends Component {
       numberOfVisits,
     } = values
     let formData = new FormData()
+    const { dispatch, data, categories } = this.props
+    console.log('values', values)
     formData.append('image', this.state.image.file.originFileObj)
     formData.append('nameAr', nameAr)
     formData.append('nameEn', nameEn)
@@ -42,15 +44,29 @@ class CreatePackage extends Component {
     formData.append('discount', discount)
     formData.append('basePrice', basePrice)
     formData.append('numberOfVisits', numberOfVisits)
-
-    await this.props.dispatch({
-      type: 'packages/create',
-      payload: formData,
-    })
+    // const currentValue = categories.list.filter((elm) => {
+    //   if (values.category == elm.nameEn) return elm._id
+    // })
+    // formData.append(
+    //   'category',
+    //   currentValue[0] ? currentValue[0]._id : values.category
+    // )
+    if (data) {
+      formData.append('id', data._id)
+      await dispatch({
+        type: 'packages/update',
+        payload: formData,
+      })
+    } else {
+      await dispatch({
+        type: 'packages/create',
+        payload: formData,
+      })
+    }
   }
 
   render() {
-    const { categories, loading } = this.props
+    const { categories, loading, data } = this.props
     return (
       <div>
         <Page inner>
@@ -68,6 +84,7 @@ class CreatePackage extends Component {
                     <Col lg={12} md={12} xs={24} sm={24}>
                       <Form.Item name="image">
                         <Avatar
+                          image={data?.image}
                           getImage={(image) => this.setState({ image })}
                         />
                       </Form.Item>
@@ -75,6 +92,7 @@ class CreatePackage extends Component {
                       <span>Name Ar</span>
                       <Form.Item
                         name="nameAr"
+                        initialValue={data?.nameAr}
                         rules={[
                           { required: true, message: 'Please enter Ar. name' },
                         ]}
@@ -84,6 +102,7 @@ class CreatePackage extends Component {
                       <span>Name En</span>
                       <Form.Item
                         name="nameEn"
+                        initialValue={data?.nameEn}
                         rules={[
                           { required: true, message: 'Please enter En. name' },
                         ]}
@@ -94,6 +113,7 @@ class CreatePackage extends Component {
                       <span>Description Ar</span>
                       <Form.Item
                         name="descriptionAr"
+                        initialValue={data?.descriptionAr}
                         rules={[
                           {
                             required: true,
@@ -106,6 +126,7 @@ class CreatePackage extends Component {
                       <span>Description En</span>
                       <Form.Item
                         name="descriptionEn"
+                        initialValue={data?.descriptionEn}
                         rules={[
                           {
                             required: true,
@@ -118,6 +139,7 @@ class CreatePackage extends Component {
                       <span>Type</span>
                       <Form.Item
                         name="type"
+                        initialValue={data?.type}
                         rules={[
                           {
                             required: true,
@@ -130,6 +152,7 @@ class CreatePackage extends Component {
                       <span>Base Price</span>
                       <Form.Item
                         name="basePrice"
+                        initialValue={data?.basePrice}
                         rules={[
                           {
                             required: true,
@@ -144,6 +167,7 @@ class CreatePackage extends Component {
                       <span>Discount</span>
                       <Form.Item
                         name="discount"
+                        initialValue={data?.discount}
                         rules={[
                           { required: true, message: 'Please enter discount' },
                         ]}
@@ -153,6 +177,7 @@ class CreatePackage extends Component {
                       <span>Number Of Visit</span>
                       <Form.Item
                         name="numberOfVisits"
+                        initialValue={data?.numberOfVisits}
                         rules={[
                           {
                             required: true,
@@ -165,6 +190,7 @@ class CreatePackage extends Component {
                       <span>Duration</span>
                       <Form.Item
                         name="duration"
+                        initialValue={data?.duration}
                         rules={[
                           {
                             required: true,
@@ -176,7 +202,7 @@ class CreatePackage extends Component {
                       </Form.Item>
 
                       <span>Features</span>
-                      <Form.List name="features">
+                      <Form.List name="features" initialValue={data?.features}>
                         {(fields, { add, remove }) => (
                           <>
                             {fields.map((field) => (

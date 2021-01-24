@@ -8,7 +8,7 @@ import { routerRedux } from 'dva/router'
 import { delay } from 'redux-saga'
 import _ from 'lodash'
 
-const { offersList, createOffer, deleteOffer } = api
+const { offersList, createOffer, deleteOffer, updateOffer } = api
 
 export default modelExtend(pageModel, {
   namespace: 'offers',
@@ -35,17 +35,6 @@ export default modelExtend(pageModel, {
         throw data
       }
     },
-    // *toggleClients({ payload }, { put, call }) {
-    //   const data = yield call(toggleClientsStatus, payload)
-    //   if (data.success) {
-    //     yield put({
-    //       type: 'toggleEnableDisableClients',
-    //       payload: data.data,
-    //     })
-    //   } else {
-    //     throw data
-    //   }
-    // },
     *delete({ payload }, { put, call }) {
       const data = yield call(deleteOffer, payload)
       if (data.success) {
@@ -71,50 +60,20 @@ export default modelExtend(pageModel, {
         console.log(error)
       }
     },
-    // *update({ payload }, { put, call }) {
-    //   try {
-    //     const data = yield call(updateServices, payload)
-    //     if (data.success) {
-    //       yield delay(6000)
-    //       message.success('تم تعديل بيانات العميل بنجاح!')
-    //       yield put(routerRedux.push('/services'))
-    //     } else {
-    //       throw data
-    //     }
-    //   } catch (error) {
-    //     let { fields } = error
-    //     Object.keys(fields).map((field) => {
-    //       fields[field].status === 'error' &&
-    //         message.error({
-    //           content: <span id={field}>{fields[field].feedback.ar}</span>,
-    //           style: {
-    //             marginTop: '20vh',
-    //           },
-    //         })
-    //     })
-    //     yield put({
-    //       type: 'updateState',
-    //       payload: {
-    //         errorFields: Object.keys(fields).filter(
-    //           (field) => fields[field].status === 'error'
-    //         ),
-    //       },
-    //     })
-    //   }
-    // },
-    // *details({ payload }, { put, call }) {
-    //   const data = yield call(getClients, payload)
-    //   if (data.success) {
-    //     yield put({
-    //       type: 'updateState',
-    //       payload: {
-    //         details: data.data,
-    //       },
-    //     })
-    //   } else {
-    //     throw data
-    //   }
-    // },
+    *update({ payload }, { put, call }) {
+      try {
+        const data = yield call(updateOffer, payload)
+        if (data.success) {
+          yield delay(6000)
+          message.success('Offer has been updated successfully')
+          window.location.reload()
+        } else {
+          throw data
+        }
+      } catch (error) {
+        console.log('error', error)
+      }
+    },
   },
   reducers: {
     updateState(state, { payload }) {

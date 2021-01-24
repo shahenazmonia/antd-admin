@@ -5,10 +5,11 @@ import { Row, Col, Button, Form, Input, Select, Spin, DatePicker } from 'antd'
 import { Page } from 'components'
 import { Avatar } from '../../services/components/upload'
 import './index.less'
+import moment from 'moment'
 
 @connect(({ offers, loading }) => ({ offers, loading }))
 @connect(({ categories }) => ({ categories }))
-class CreatePart extends Component {
+class CreateOffer extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -17,6 +18,8 @@ class CreatePart extends Component {
     })
   }
   onFinish = async (values) => {
+    const { dispatch, data, categories } = this.props
+    let formData = new FormData()
     const {
       nameAr,
       nameEn,
@@ -27,24 +30,38 @@ class CreatePart extends Component {
       endDate,
       discount,
     } = values
-    let formData = new FormData()
     formData.append('image', this.state.image.file.originFileObj)
     formData.append('nameAr', nameAr)
     formData.append('nameEn', nameEn)
-    formData.append('category', category)
     formData.append('descriptionAr', descriptionAr)
     formData.append('descriptionEn', descriptionEn)
     formData.append('startDate', startDate)
     formData.append('endDate', endDate)
     formData.append('discount', discount)
 
-    await this.props.dispatch({
-      type: 'offers/create',
-      payload: formData,
+    const currentValue = categories.list.filter((elm) => {
+      if (category == elm.nameEn) return elm._id
     })
+    formData.append(
+      'category',
+      currentValue[0] ? currentValue[0]._id : category
+    )
+    if (data) {
+      formData.append('id', data._id)
+      await dispatch({
+        type: 'offers/update',
+        payload: formData,
+      })
+    } else {
+      await this.props.dispatch({
+        type: 'offers/create',
+        payload: formData,
+      })
+    }
   }
   render() {
-    const { categories, loading } = this.props
+    const { categories, loading, data } = this.props
+    console.log('data', data)
     return (
       <div>
         <Page inner>
@@ -62,6 +79,7 @@ class CreatePart extends Component {
                     <Col lg={12} md={12} xs={24} sm={24}>
                       <Form.Item name="image">
                         <Avatar
+                          image={data?.image}
                           getImage={(image) => this.setState({ image })}
                         />
                       </Form.Item>
@@ -69,6 +87,7 @@ class CreatePart extends Component {
                       <span>Name Ar</span>
                       <Form.Item
                         name="nameAr"
+                        initialValue={data?.nameAr}
                         rules={[
                           { required: true, message: 'Please enter Ar. name' },
                         ]}
@@ -78,6 +97,7 @@ class CreatePart extends Component {
                       <span>Name En</span>
                       <Form.Item
                         name="nameEn"
+                        initialValue={data?.nameEn}
                         rules={[
                           { required: true, message: 'Please enter En. name' },
                         ]}
@@ -88,6 +108,7 @@ class CreatePart extends Component {
                       <span>Description Ar</span>
                       <Form.Item
                         name="descriptionAr"
+                        initialValue={data?.descriptionAr}
                         rules={[
                           {
                             required: true,
@@ -100,6 +121,7 @@ class CreatePart extends Component {
                       <span>Description En</span>
                       <Form.Item
                         name="descriptionEn"
+                        initialValue={data?.descriptionEn}
                         rules={[
                           {
                             required: true,
@@ -114,6 +136,7 @@ class CreatePart extends Component {
                       <span>Start Date</span>
                       <Form.Item
                         name="startDate"
+                        initialValue={moment(data?.startDate)}
                         rules={[
                           {
                             required: true,
@@ -126,6 +149,7 @@ class CreatePart extends Component {
                       <span>End Date</span>
                       <Form.Item
                         name="endDate"
+                        initialValue={moment(data?.endDate)}
                         rules={[
                           {
                             required: true,
@@ -138,6 +162,7 @@ class CreatePart extends Component {
                       <span>Category</span>
                       <Form.Item
                         name="category"
+                        initialValue={data?.category?.map((elm) => elm.nameEn)}
                         rules={[
                           { required: true, message: 'Please select category' },
                         ]}
@@ -156,6 +181,7 @@ class CreatePart extends Component {
                       <span>Discount</span>
                       <Form.Item
                         name="discount"
+                        initialValue={data?.discount}
                         rules={[
                           {
                             required: true,
@@ -182,10 +208,10 @@ class CreatePart extends Component {
   }
 }
 
-CreatePart.propTypes = {
+CreateOffer.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
 }
 
-export default CreatePart
+export default CreateOffer

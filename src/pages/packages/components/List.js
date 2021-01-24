@@ -4,6 +4,7 @@ import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
+import UpdatePackage from '../update'
 
 @connect(({ loading, dispatch, packages }) => ({
   loading,
@@ -11,6 +12,9 @@ import { Link, connect } from 'umi'
   packages,
 }))
 class List extends PureComponent {
+  state = {
+    updateFlag: false,
+  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -23,7 +27,10 @@ class List extends PureComponent {
     const { dispatch } = this.props
     const { key } = e
     if (key === '1') {
-      // history.push({ pathname: `/departments/update/${record._id}` })
+      this.setState({
+        updateFlag: true,
+        data: record,
+      })
     } else if (key === '2') {
       dispatch({
         type: 'packages/delete',
@@ -34,6 +41,7 @@ class List extends PureComponent {
 
   render() {
     const { packages, loading } = this.props
+    const { updateFlag, data } = this.state
     const columns = [
       {
         title: <Trans>Image</Trans>,
@@ -59,9 +67,33 @@ class List extends PureComponent {
         ),
       },
       {
-        title: <Trans>Description</Trans>,
+        title: <Trans>Description En</Trans>,
         dataIndex: 'descriptionEn',
-        key: 'description',
+        key: 'descriptionEn',
+        render: (text, record) => (
+          <Link to={`package/${record.id}`}>{text}</Link>
+        ),
+      },
+      {
+        title: <Trans>Description Ar</Trans>,
+        dataIndex: 'descriptionAr',
+        key: 'descriptionAr',
+        render: (text, record) => (
+          <Link to={`package/${record.id}`}>{text}</Link>
+        ),
+      },
+      {
+        title: <Trans>Discount</Trans>,
+        dataIndex: 'discount',
+        key: 'discount',
+        render: (text, record) => (
+          <Link to={`package/${record.id}`}>{text}</Link>
+        ),
+      },
+      {
+        title: <Trans>Base Price</Trans>,
+        dataIndex: 'basePrice',
+        key: 'basePrice',
         render: (text, record) => (
           <Link to={`package/${record.id}`}>{text}</Link>
         ),
@@ -111,14 +143,19 @@ class List extends PureComponent {
 
     return (
       <Spin spinning={loading?.models?.packages}>
-        <Table
-          pagination={true}
-          bordered
-          columns={columns}
-          dataSource={packages?.list}
-          simple
-          rowKey={(record) => record.id}
-        />
+        {updateFlag ? (
+          <UpdatePackage data={data} />
+        ) : (
+          <Table
+            pagination={true}
+            bordered
+            columns={columns}
+            dataSource={packages?.list}
+            simple
+            rowKey={(record) => record.id}
+            scroll={{ x: 1600 }}
+          />
+        )}
       </Spin>
     )
   }

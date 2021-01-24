@@ -30,11 +30,12 @@ class CreatePart extends Component {
       size,
     } = values
     let formData = new FormData()
+    const { dispatch, data, categories } = this.props
+    console.log('categories', categories)
     formData.append('image', this.state.image.file.originFileObj)
     formData.append('nameAr', nameAr)
     formData.append('nameEn', nameEn)
     formData.append('price', price)
-    formData.append('category', category)
     formData.append('descriptionAr', descriptionAr)
     formData.append('descriptionEn', descriptionEn)
     formData.append('madeIn', madeIn)
@@ -42,13 +43,28 @@ class CreatePart extends Component {
     formData.append('SpecificationAr', SpecificationAr)
     formData.append('size', size)
 
-    await this.props.dispatch({
-      type: 'parts/create',
-      payload: formData,
+    const currentValue = categories.list.filter((elm) => {
+      if (values.category == elm.nameEn) return elm._id
     })
+    formData.append(
+      'category',
+      currentValue[0] ? currentValue[0]._id : values.category
+    )
+    if (data) {
+      formData.append('id', data._id)
+      await dispatch({
+        type: 'parts/update',
+        payload: formData,
+      })
+    } else {
+      await dispatch({
+        type: 'parts/create',
+        payload: formData,
+      })
+    }
   }
   render() {
-    const { categories, loading } = this.props
+    const { categories, loading, data } = this.props
     return (
       <div>
         <Page inner>
@@ -66,6 +82,7 @@ class CreatePart extends Component {
                     <Col lg={12} md={12} xs={24} sm={24}>
                       <Form.Item name="image">
                         <Avatar
+                          image={data?.image}
                           getImage={(image) => this.setState({ image })}
                         />
                       </Form.Item>
@@ -73,6 +90,7 @@ class CreatePart extends Component {
                       <span>Name Ar</span>
                       <Form.Item
                         name="nameAr"
+                        initialValue={data?.nameAr}
                         rules={[
                           { required: true, message: 'Please enter Ar. name' },
                         ]}
@@ -82,6 +100,7 @@ class CreatePart extends Component {
                       <span>Name En</span>
                       <Form.Item
                         name="nameEn"
+                        initialValue={data?.nameEn}
                         rules={[
                           { required: true, message: 'Please enter En. name' },
                         ]}
@@ -92,6 +111,7 @@ class CreatePart extends Component {
                       <span>Description Ar</span>
                       <Form.Item
                         name="descriptionAr"
+                        initialValue={data?.descriptionAr}
                         rules={[
                           {
                             required: true,
@@ -104,6 +124,7 @@ class CreatePart extends Component {
                       <span>Description En</span>
                       <Form.Item
                         name="descriptionEn"
+                        initialValue={data?.descriptionEn}
                         rules={[
                           {
                             required: true,
@@ -116,6 +137,7 @@ class CreatePart extends Component {
                       <span>Category</span>
                       <Form.Item
                         name="category"
+                        initialValue={data?.category?.nameEn}
                         rules={[
                           { required: true, message: 'Please select category' },
                         ]}
@@ -135,6 +157,7 @@ class CreatePart extends Component {
                       <span>Made In</span>
                       <Form.Item
                         name="madeIn"
+                        initialValue={data?.madeIn}
                         rules={[
                           {
                             required: true,
@@ -147,6 +170,7 @@ class CreatePart extends Component {
                       <span>Specification En</span>
                       <Form.Item
                         name="SpecificationEn"
+                        initialValue={data?.SpecificationEn}
                         rules={[
                           {
                             required: true,
@@ -159,6 +183,7 @@ class CreatePart extends Component {
                       <span>Specification Ar</span>
                       <Form.Item
                         name="SpecificationAr"
+                        initialValue={data?.SpecificationAr}
                         rules={[
                           {
                             required: true,
@@ -171,6 +196,7 @@ class CreatePart extends Component {
                       <span>Price</span>
                       <Form.Item
                         name="price"
+                        initialValue={data?.price}
                         rules={[
                           {
                             required: true,
@@ -183,6 +209,7 @@ class CreatePart extends Component {
                       <span>Size</span>
                       <Form.Item
                         name="size"
+                        initialValue={data?.size}
                         rules={[
                           {
                             required: true,
