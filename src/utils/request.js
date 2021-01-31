@@ -13,8 +13,8 @@ export default function request(options) {
   const cloneData = cloneDeep(data)
 
   try {
-    let domain = apiUrl
-    const urlMatch = url.match(/[a-zA-z]+:\/\/[^/]*/)
+    const domain = apiUrl
+    const urlMatch = url.match(/[a-zA-z]+:\/\/[^/]*/) || ''
     if (urlMatch) {
       ;[domain] = urlMatch
       url = url.slice(domain.length)
@@ -22,11 +22,11 @@ export default function request(options) {
 
     const match = parse(url)
     url = compile(url)(data)
-    for (const item of match) {
-      if (item instanceof Object && item.name in cloneData) {
-        delete cloneData[item.name]
-      }
-    }
+    // for (const item of match) {
+    //   if (item instanceof Object && item.name in cloneData) {
+    //     delete cloneData[item.name]
+    //   }
+    // }
     url = domain + url
   } catch (e) {
     message.error(e.message)

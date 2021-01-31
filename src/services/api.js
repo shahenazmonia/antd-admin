@@ -50,4 +50,15 @@ export default {
   createPackage: 'POST /postNewPackage',
   updatePackage: 'PUT /updatePackage',
   deletePackage: 'DELETE /deletePackage/:id',
+
+  promoList: 'GET /getAllPromoCodes',
+  createPromoCode: 'POST /postNewPromoCode',
+  updatePromoCode: 'PUT /updatePromoCode',
+  deletePromoCode: 'DELETE /deletePromoCode/:id',
+
+  ordersAdminList: 'GET /getOrdersAdmin/:orderType/:orderStatus/:createDate',
+  pindingOrdersList: 'GET /getPindingOrders',
+  providersList: 'GET /getProviders',
+  createProvider: 'POST /createNewProvider',
+  invoicesList: 'GET /getInvoices/:order?/:type?',
 }

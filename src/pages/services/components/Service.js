@@ -9,9 +9,15 @@ import './list.less'
 @connect(({ services, loading }) => ({ services, loading }))
 class Service extends Component {
   onFinish = async (values) => {
-    const { id, dispatch, data } = this.props
+    const { dispatch, data } = this.props
     let formData = new FormData()
-    formData.append('image', this.state.image.file.originFileObj)
+    console.log('this.state.image', this.state.image)
+    formData.append(
+      'image',
+      this.state.image.file
+        ? this.state.image.file.originFileObj
+        : this.state.image
+    )
     formData.append('nameAr', values.nameAr)
     formData.append('nameEn', values.nameEn)
     if (data) {
@@ -21,6 +27,7 @@ class Service extends Component {
         payload: formData,
       })
     } else {
+      formData.append('image', this.state.image.file.originFileObj)
       await dispatch({
         type: 'services/create',
         payload: formData,

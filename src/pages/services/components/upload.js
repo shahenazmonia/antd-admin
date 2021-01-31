@@ -24,6 +24,14 @@ export class Avatar extends React.Component {
     loading: false,
   }
 
+  componentDidMount() {
+    const { image } = this.props
+    console.log('imdddd', image)
+    if (image) {
+      this.props.getImage(image)
+    }
+  }
+
   handleChange = (info) => {
     if (info.file.status === 'uploading') {
       this.setState({ loading: true })
