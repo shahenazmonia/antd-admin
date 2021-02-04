@@ -21,12 +21,11 @@ export default modelExtend(pageModel, {
     *list({ payload }, { put, call }) {
       const data = yield call(pindingOrdersList, payload)
       if (data.success) {
-        const { categories, categoryLength } = data
+        const { oders } = data
         yield put({
           type: 'updateState',
           payload: {
-            list: categories,
-            total: categoryLength,
+            list: oders,
           },
         })
       } else {

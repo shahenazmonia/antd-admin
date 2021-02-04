@@ -26,64 +26,88 @@ class List extends PureComponent {
     const { dispatch } = this.props
     const { key } = e
     if (key === '1') {
-      this.setState({
-        updateFlag: true,
-        data: record,
-      })
+      // this.setState({
+      //   updateFlag: true,
+      //   data: record,
+      // })
     } else if (key === '2') {
-      dispatch({
-        type: 'categories/delete',
-        payload: { id: record._id },
-      })
+      // dispatch({
+      //   type: 'categories/delete',
+      //   payload: { id: record._id },
+      // })
     }
   }
 
   render() {
-    const { categories, loading } = this.props
+    const { pendingOrders, loading } = this.props
+    const { updateFlag, data } = this.state
+    console.log('orders', pendingOrders)
     const columns = [
       {
-        title: <Trans>Image</Trans>,
-        dataIndex: 'image',
-        key: 'image',
-        fixed: 'left',
-        render: (text) => <Avatar style={{ marginLeft: 8 }} src={text} />,
+        title: <Trans>Order Type</Trans>,
+        dataIndex: 'orderType',
+        key: 'orderType',
+        render: (text, record) => <Link to={``}>{text}</Link>,
       },
       {
-        title: <Trans>Name Ar</Trans>,
-        dataIndex: 'nameAr',
-        key: 'nameAr',
+        title: <Trans>Location Type</Trans>,
+        dataIndex: ['location', 'type'],
+        key: 'type',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>Location Coordinates</Trans>,
+        dataIndex: ['location', 'coordinates'],
+        key: 'coordinates',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>Email</Trans>,
+        dataIndex: ['user', 'email'],
+        key: 'userEmail',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>First Name</Trans>,
+        dataIndex: ['user', 'firstName'],
+        key: 'firstName',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>Last Name</Trans>,
+        dataIndex: ['user', 'lastName'],
+        key: 'lastName',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>House Type</Trans>,
+        dataIndex: ['user', 'houseType'],
+        key: 'houseType',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>House Number</Trans>,
+        dataIndex: ['user', 'houseNumber'],
+        key: 'houseNumber',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>isConfirmed</Trans>,
+        dataIndex: ['user', 'isConfirmed'],
+        key: 'isConfirmed',
         render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
+          <Link to={``}>{text === true ? 'Confirmed' : 'not Confirmed'}</Link>
         ),
       },
       {
-        title: <Trans>Name En</Trans>,
-        dataIndex: 'nameEn',
-        key: 'nameEn',
-        render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
-        ),
+        title: <Trans>onModel</Trans>,
+        dataIndex: 'onModel',
+        key: 'onModel',
       },
       {
-        title: <Trans>Price</Trans>,
-        dataIndex: 'price',
-        key: 'price',
-        render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
-        ),
-      },
-      {
-        title: <Trans>Department</Trans>,
-        dataIndex: ['department', 'nameEn'],
-        key: 'department',
-        render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
-        ),
-      },
-      {
-        title: <Trans>Status</Trans>,
-        dataIndex: 'status',
-        key: 'status',
+        title: <Trans>order Status</Trans>,
+        dataIndex: 'orderStatus',
+        key: 'orderStatus',
       },
       {
         title: <Trans>Operation</Trans>,
@@ -102,9 +126,8 @@ class List extends PureComponent {
         },
       },
     ]
-    const { updateFlag, data } = this.state
     return (
-      <Spin spinning={loading?.models?.categories}>
+      <Spin spinning={loading?.models?.pendingOrders}>
         {updateFlag ? (
           <UpdateCategory data={data} />
         ) : (
@@ -112,9 +135,10 @@ class List extends PureComponent {
             pagination={true}
             bordered
             columns={columns}
-            dataSource={categories?.list}
+            dataSource={pendingOrders?.list}
             simple
             rowKey={(record) => record.id}
+            scroll={{ x: 1800 }}
           />
         )}
       </Spin>
