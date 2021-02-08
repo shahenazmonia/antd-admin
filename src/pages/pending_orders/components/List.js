@@ -4,7 +4,6 @@ import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
-import UpdateCategory from '../update'
 
 @connect(({ loading, pendingOrders }) => ({
   loading,
@@ -26,15 +25,7 @@ class List extends PureComponent {
     const { dispatch } = this.props
     const { key } = e
     if (key === '1') {
-      // this.setState({
-      //   updateFlag: true,
-      //   data: record,
-      // })
     } else if (key === '2') {
-      // dispatch({
-      //   type: 'categories/delete',
-      //   payload: { id: record._id },
-      // })
     }
   }
 
@@ -128,19 +119,15 @@ class List extends PureComponent {
     ]
     return (
       <Spin spinning={loading?.models?.pendingOrders}>
-        {updateFlag ? (
-          <UpdateCategory data={data} />
-        ) : (
-          <Table
-            pagination={true}
-            bordered
-            columns={columns}
-            dataSource={pendingOrders?.list}
-            simple
-            rowKey={(record) => record.id}
-            scroll={{ x: 1800 }}
-          />
-        )}
+        <Table
+          pagination={true}
+          bordered
+          columns={columns}
+          dataSource={pendingOrders?.list}
+          simple
+          rowKey={(record) => record.id}
+          scroll={{ x: 1800 }}
+        />
       </Spin>
     )
   }

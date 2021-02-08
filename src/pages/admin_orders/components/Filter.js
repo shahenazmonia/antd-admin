@@ -24,21 +24,7 @@ class Filter extends Component {
                 className={'filterBtns'}
               >
                 <Col xs={0} md={0} lg={21}></Col>
-                <Col xs={24} md={12} lg={3}>
-                  <div className="mt10">
-                    <Button
-                      type="ghost"
-                      className="add-button"
-                      onClick={() =>
-                        history.push({
-                          pathname: '/categories/create',
-                        })
-                      }
-                    >
-                      <Trans> + Add Category</Trans>
-                    </Button>
-                  </div>
-                </Col>
+                <Col xs={24} md={12} lg={3}></Col>
               </Row>
             </Col>
           </Row>

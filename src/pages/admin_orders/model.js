@@ -21,12 +21,11 @@ export default modelExtend(pageModel, {
     *list({ payload }, { put, call }) {
       const data = yield call(ordersAdminList, payload)
       if (data.success) {
-        const { categories, categoryLength } = data
+        const { result } = data
         yield put({
           type: 'updateState',
           payload: {
-            list: categories,
-            total: categoryLength,
+            list: result,
           },
         })
       } else {

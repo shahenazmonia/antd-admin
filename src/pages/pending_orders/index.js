@@ -3,14 +3,12 @@ import PropTypes from 'prop-types'
 import { connect } from 'umi'
 import { Page } from 'components'
 import List from './components/List'
-import Filter from './components/Filter'
 
 @connect(({ pendingOrders, loading }) => ({ pendingOrders, loading }))
 class PendingOrders extends Component {
   render() {
     return (
       <Page inner>
-        <Filter />
         <List />
       </Page>
     )

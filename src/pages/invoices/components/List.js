@@ -18,7 +18,7 @@ class List extends PureComponent {
     const { dispatch } = this.props
     dispatch({
       type: 'invoices/list',
-      payload: { order: 'x', type: 'x' },
+      payload: { order: '', type: '' },
     })
   }
 

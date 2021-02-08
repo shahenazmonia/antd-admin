@@ -56,9 +56,9 @@ export default {
   updatePromoCode: 'PUT /updatePromoCode',
   deletePromoCode: 'DELETE /deletePromoCode/:id',
 
-  ordersAdminList: 'GET /getOrdersAdmin/:orderType/:orderStatus/:createDate',
-  pindingOrdersList: 'GET /getPindingOrders',
+  ordersAdminList: 'POST /getOrdersAdmin',
+  pindingOrdersList: 'POST /getPindingOrders',
   providersList: 'GET /getProviders',
   createProvider: 'POST /createNewProvider',
-  invoicesList: 'GET /getInvoices/:order?/:type?',
+  invoicesList: 'POST /getInvoices',
 }
