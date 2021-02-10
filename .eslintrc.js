@@ -22,7 +22,7 @@ module.exports = {
     quotes: [1, 'single', 'avoid-escape'],
     'no-use-before-define': [2, { functions: false }],
     'react/display-name': 'off',
-    semi: [2, 'always'],
+    semi: ['error'],
     'prefer-const': 1,
     'react/prefer-es6-class': 0,
     'react/jsx-filename-extension': 0,

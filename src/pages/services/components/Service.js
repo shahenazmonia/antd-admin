@@ -9,15 +9,30 @@ import './list.less'
 @connect(({ services, loading }) => ({ services, loading }))
 class Service extends Component {
   onFinish = async (values) => {
+    const { dispatch, data } = this.props
     let formData = new FormData()
-    formData.append('image', this.state.image.file.originFileObj)
+    console.log('this.state.image', this.state.image)
+    formData.append(
+      'image',
+      this.state.image.file
+        ? this.state.image.file.originFileObj
+        : this.state.image
+    )
     formData.append('nameAr', values.nameAr)
     formData.append('nameEn', values.nameEn)
-    // formData.append('status', values.status)
-    await this.props.dispatch({
-      type: 'services/create',
-      payload: formData,
-    })
+    if (data) {
+      formData.append('id', data._id)
+      await dispatch({
+        type: 'services/update',
+        payload: formData,
+      })
+    } else {
+      formData.append('image', this.state.image.file.originFileObj)
+      await dispatch({
+        type: 'services/create',
+        payload: formData,
+      })
+    }
   }
 
   onFinishFailed = (errorInfo) => {
@@ -25,7 +40,7 @@ class Service extends Component {
   }
 
   render() {
-    const { loading } = this.props
+    const { loading, data } = this.props
     return (
       <Page inner>
         <Spin spinning={loading?.global}>
@@ -38,11 +53,15 @@ class Service extends Component {
                 onFinishFailed={this.onFinishFailed}
               >
                 <Form.Item name="image">
-                  <Avatar getImage={(image) => this.setState({ image })} />
+                  <Avatar
+                    image={data?.image}
+                    getImage={(image) => this.setState({ image })}
+                  />
                 </Form.Item>
                 <span>Name Ar</span>
                 <Form.Item
                   name="nameAr"
+                  initialValue={data?.nameAr}
                   rules={[{ required: true, message: 'Please enter Ar. name' }]}
                 >
                   <Input />
@@ -50,23 +69,12 @@ class Service extends Component {
                 <span>Name En</span>
                 <Form.Item
                   name="nameEn"
+                  initialValue={data?.nameEn}
                   rules={[{ required: true, message: 'Please enter En. name' }]}
                 >
                   <Input />
                 </Form.Item>
 
-                <span>Status</span>
-                <Form.Item
-                  name="status"
-                  rules={[
-                    { required: true, message: 'Please choose a status' },
-                  ]}
-                >
-                  <Select>
-                    <Select.Option value="active"> Active </Select.Option>
-                    <Select.Option value="inActive"> In Active </Select.Option>
-                  </Select>
-                </Form.Item>
                 <Form.Item>
                   <Button type="primary" htmlType="submit">
                     Submit
@@ -82,7 +90,7 @@ class Service extends Component {
 }
 
 Service.propTypes = {
-  user: PropTypes.object,
+  history: PropTypes.object,
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,

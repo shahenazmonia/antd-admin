@@ -4,13 +4,16 @@ import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
+import UpdatePart from '../update'
 
-@connect(({ loading, dispatch, parts }) => ({
+@connect(({ loading, parts }) => ({
   loading,
-  dispatch,
   parts,
 }))
 class List extends PureComponent {
+  state = {
+    updateFlag: false,
+  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -18,8 +21,26 @@ class List extends PureComponent {
       payload: {},
     })
   }
+
+  handleMenuClick = (record, e) => {
+    const { dispatch } = this.props
+    const { key } = e
+    if (key === '1') {
+      this.setState({
+        updateFlag: true,
+        data: record,
+      })
+    } else if (key === '2') {
+      dispatch({
+        type: 'parts/delete',
+        payload: { id: record._id },
+      })
+    }
+  }
+
   render() {
     const { parts, loading } = this.props
+    const { updateFlag, data } = this.state
     const columns = [
       {
         title: <Trans>Image</Trans>,
@@ -41,9 +62,15 @@ class List extends PureComponent {
         render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
       },
       {
-        title: <Trans>Description</Trans>,
+        title: <Trans>Description Ar</Trans>,
+        dataIndex: 'descriptionAr',
+        key: 'descriptionAr',
+        render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
+      },
+      {
+        title: <Trans>Description En</Trans>,
         dataIndex: 'descriptionEn',
-        key: 'description',
+        key: 'descriptionEn',
         render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
       },
       {
@@ -56,6 +83,30 @@ class List extends PureComponent {
         title: <Trans>Category</Trans>,
         dataIndex: ['category', 'nameEn'],
         key: 'category',
+        render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
+      },
+      {
+        title: <Trans>made In</Trans>,
+        dataIndex: 'madeIn',
+        key: 'madeIn',
+        render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
+      },
+      {
+        title: <Trans>Specification En</Trans>,
+        dataIndex: 'SpecificationEn',
+        key: 'SpecificationEn',
+        render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
+      },
+      {
+        title: <Trans>Specification Ar</Trans>,
+        dataIndex: 'SpecificationAr',
+        key: 'SpecificationAr',
+        render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
+      },
+      {
+        title: <Trans>Size</Trans>,
+        dataIndex: 'size',
+        key: 'size',
         render: (text, record) => <Link to={`part/${record.id}`}>{text}</Link>,
       },
       {
@@ -82,15 +133,20 @@ class List extends PureComponent {
     ]
 
     return (
-      <Spin spinning={loading?.global}>
-        <Table
-          pagination={true}
-          bordered
-          columns={columns}
-          dataSource={parts?.list}
-          simple
-          rowKey={(record) => record.id}
-        />
+      <Spin spinning={loading?.models.parts}>
+        {updateFlag ? (
+          <UpdatePart data={data} />
+        ) : (
+          <Table
+            pagination={true}
+            bordered
+            columns={columns}
+            dataSource={parts?.list}
+            simple
+            rowKey={(record) => record.id}
+            scroll={{ x: 1800 }}
+          />
+        )}
       </Spin>
     )
   }

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
-import { Link, connect } from 'umi'
+import { history, Link, connect } from 'umi'
 import styles from './List.less'
+import UpdateDepartment from '../update'
 
 @connect(({ loading, dispatch, departments }) => ({
   loading,
@@ -12,6 +13,9 @@ import styles from './List.less'
   departments,
 }))
 class List extends PureComponent {
+  state = {
+    updateFlag: false,
+  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -19,6 +23,26 @@ class List extends PureComponent {
       payload: {},
     })
   }
+
+  handleMenuClick = (record, e) => {
+    const { dispatch } = this.props
+    const { key } = e
+    if (key === '1') {
+      // history.push({
+      //   pathname: `/departments/update/${JSON.stringify(record)}`,
+      // })
+      this.setState({
+        updateFlag: true,
+        data: record,
+      })
+    } else if (key === '2') {
+      dispatch({
+        type: 'departments/delete',
+        payload: { id: record._id },
+      })
+    }
+  }
+
   render() {
     const { departments, loading } = this.props
     const columns = [
@@ -83,19 +107,25 @@ class List extends PureComponent {
         },
       },
     ]
-
+    const { updateFlag, data } = this.state
     return (
-      <Spin spinning={loading?.global}>
-        <Table
-          pagination={true}
-          className={styles.table}
-          bordered
-          columns={columns}
-          dataSource={departments?.list}
-          simple
-          rowKey={(record) => record.id}
-        />
-      </Spin>
+      <>
+        <Spin spinning={loading?.models?.departments}>
+          {updateFlag ? (
+            <UpdateDepartment data={data} />
+          ) : (
+            <Table
+              pagination={true}
+              className={styles.table}
+              bordered
+              columns={columns}
+              dataSource={departments?.list}
+              simple
+              rowKey={(record) => record.id}
+            />
+          )}
+        </Spin>
+      </>
     )
   }
 }

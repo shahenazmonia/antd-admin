@@ -5,6 +5,7 @@ import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { connect } from 'umi'
 import moment from 'moment'
+import UpdateOffer from '../update'
 
 @connect(({ loading, dispatch, offers }) => ({
   loading,
@@ -12,6 +13,9 @@ import moment from 'moment'
   offers,
 }))
 class List extends PureComponent {
+  state = {
+    updateFlag: false,
+  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -19,8 +23,26 @@ class List extends PureComponent {
       payload: {},
     })
   }
+
+  handleMenuClick = (record, e) => {
+    const { dispatch } = this.props
+    const { key } = e
+    if (key === '1') {
+      this.setState({
+        updateFlag: true,
+        data: record,
+      })
+    } else if (key === '2') {
+      dispatch({
+        type: 'offers/delete',
+        payload: { id: record._id },
+      })
+    }
+  }
+
   render() {
     const { offers, loading } = this.props
+    const { updateFlag, data } = this.state
     const columns = [
       {
         title: <Trans>Image</Trans>,
@@ -42,9 +64,21 @@ class List extends PureComponent {
         render: (text, record) => <h4>{text}</h4>,
       },
       {
-        title: <Trans>Description</Trans>,
+        title: <Trans>Category</Trans>,
+        dataIndex: ['category', 'nameEn'],
+        key: 'category',
+        render: (text, record) => <h4>{text}</h4>,
+      },
+      {
+        title: <Trans>Description En</Trans>,
         dataIndex: 'descriptionEn',
-        key: 'description',
+        key: 'descriptionEn',
+        render: (text, record) => <h4>{text}</h4>,
+      },
+      {
+        title: <Trans>Description Ar</Trans>,
+        dataIndex: 'descriptionAr',
+        key: 'descriptionAr',
         render: (text, record) => <h4>{text}</h4>,
       },
       {
@@ -91,15 +125,19 @@ class List extends PureComponent {
     ]
 
     return (
-      <Spin spinning={loading?.global}>
-        <Table
-          pagination={true}
-          bordered
-          columns={columns}
-          dataSource={offers?.list}
-          simple
-          rowKey={(record) => record.id}
-        />
+      <Spin spinning={loading?.models?.offers}>
+        {updateFlag ? (
+          <UpdateOffer data={data} />
+        ) : (
+          <Table
+            pagination={true}
+            bordered
+            columns={columns}
+            dataSource={offers?.list}
+            simple
+            rowKey={(record) => record.id}
+          />
+        )}
       </Spin>
     )
   }

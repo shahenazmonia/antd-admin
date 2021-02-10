@@ -24,6 +24,14 @@ export class Avatar extends React.Component {
     loading: false,
   }
 
+  componentDidMount() {
+    const { image } = this.props
+    console.log('imdddd', image)
+    if (image) {
+      this.props.getImage(image)
+    }
+  }
+
   handleChange = (info) => {
     if (info.file.status === 'uploading') {
       this.setState({ loading: true })
@@ -48,6 +56,7 @@ export class Avatar extends React.Component {
 
   render() {
     const { loading, imageUrl } = this.state
+    const { image } = this.props
     const uploadButton = (
       <div>
         {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -65,7 +74,11 @@ export class Avatar extends React.Component {
         onChange={this.handleChange}
       >
         {imageUrl ? (
-          <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+          <img
+            src={imageUrl ? imageUrl : image}
+            alt="avatar"
+            style={{ width: '100%' }}
+          />
         ) : (
           uploadButton
         )}

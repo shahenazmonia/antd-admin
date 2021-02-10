@@ -18,29 +18,47 @@ export default {
 
   servicesList: 'GET /getAllServicesAdmin',
   createServices: 'POST /postNewService',
-  updateServices: 'PUT /updateService ',
+  updateServices: 'PUT /updateService',
+  deleteService: 'DELETE /deleteService/:id',
 
   departmentsList: 'GET /getAllDepartments',
   createDepartment: 'POST /postNewDepartment',
-  updateDepartment: 'PUT /updateDepartment ',
+  updateDepartment: 'PUT /updateDepartment',
+  deleteDepartment: 'DELETE /deleteDepartment/:id',
 
   categoriesList: 'GET /getAllCategories',
   createCategory: 'POST /postNewCategory',
-  updateCategory: 'PUT /updateCategory ',
+  updateCategory: 'PUT /updateCategory',
+  deleteCategory: 'DELETE /deleteCategory/:id',
 
   subCategoriesList: 'GET /getAllSubCategories',
   createSubCategory: 'POST /postNewSubCategory',
-  updateSubCategory: 'PUT /updateSubCategory ',
+  updateSubCategory: 'PUT /updateSubCategory',
+  deleteSubCategory: 'DELETE /deleteSubCategory/:id',
 
   partsList: 'GET /getAllParts',
   createPart: 'POST /postNewPart',
-  updatePart: 'PUT /updatePart ',
+  updatePart: 'PUT /updatePart',
+  deletePart: 'DELETE /deletePart/:id',
 
   offersList: 'GET /getAllOffersAdmin',
   createOffer: 'POST /postNewOffer',
   updateOffer: 'PUT /updateOffer',
+  deleteOffer: 'DELETE /deleteOffer/:id',
 
   packagesList: 'GET /getAllPackagesAdmin',
   createPackage: 'POST /postNewPackage',
   updatePackage: 'PUT /updatePackage',
+  deletePackage: 'DELETE /deletePackage/:id',
+
+  promoList: 'GET /getAllPromoCodes',
+  createPromoCode: 'POST /postNewPromoCode',
+  updatePromoCode: 'PUT /updatePromoCode',
+  deletePromoCode: 'DELETE /deletePromoCode/:id',
+
+  ordersAdminList: 'POST /getOrdersAdmin',
+  pindingOrdersList: 'POST /getPindingOrders',
+  providersList: 'GET /getProviders',
+  createProvider: 'POST /createNewProvider',
+  invoicesList: 'POST /getInvoices',
 }

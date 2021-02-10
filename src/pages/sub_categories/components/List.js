@@ -4,6 +4,7 @@ import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
+import UpdateSubCategory from '../update'
 
 @connect(({ loading, dispatch, subCategories }) => ({
   loading,
@@ -11,6 +12,9 @@ import { Link, connect } from 'umi'
   subCategories,
 }))
 class List extends PureComponent {
+  state = {
+    updateFlag: false,
+  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -18,6 +22,24 @@ class List extends PureComponent {
       payload: {},
     })
   }
+
+  handleMenuClick = (record, e) => {
+    const { dispatch } = this.props
+    const { key } = e
+    if (key === '1') {
+      // history.push({ pathname: `/sub_categories/update/${record._id}` })
+      this.setState({
+        updateFlag: true,
+        data: record,
+      })
+    } else if (key === '2') {
+      dispatch({
+        type: 'subCategories/delete',
+        payload: { id: record._id },
+      })
+    }
+  }
+
   render() {
     const { subCategories, loading } = this.props
     const columns = [
@@ -46,7 +68,7 @@ class List extends PureComponent {
         ),
       },
       {
-        title: <Trans>Service</Trans>,
+        title: <Trans>Category</Trans>,
         dataIndex: ['category', 'nameEn'],
         key: 'category',
         render: (text, record) => (
@@ -75,17 +97,21 @@ class List extends PureComponent {
         },
       },
     ]
-
+    const { updateFlag, data } = this.state
     return (
-      <Spin spinning={loading?.global}>
-        <Table
-          pagination={true}
-          bordered
-          columns={columns}
-          dataSource={subCategories?.list}
-          simple
-          rowKey={(record) => record.id}
-        />
+      <Spin spinning={loading?.models?.subCategories}>
+        {updateFlag ? (
+          <UpdateSubCategory data={data} />
+        ) : (
+          <Table
+            pagination={true}
+            bordered
+            columns={columns}
+            dataSource={subCategories?.list}
+            simple
+            rowKey={(record) => record.id}
+          />
+        )}
       </Spin>
     )
   }

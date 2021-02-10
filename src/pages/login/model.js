@@ -25,16 +25,19 @@ export default {
     *login({ payload }, { put, call, select }) {
       try {
         const data = yield call(loginUser, payload)
-        console.log('data : ', data)
         const { locationQuery } = yield select((_) => _.app)
         if (data.success) {
           const { from } = locationQuery
-          axios.defaults.headers.common.Authorization = data.token
+          console.log('data', data)
+          axios.defaults.headers.common.Authorization = `Bearer ${data.token}`
           store.set('user', data)
           yield put({ type: 'app/query' })
           if (!pathToRegexp('/login').exec(from)) {
-            if (['', '/'].includes(from)) history.push('/services')
-            else history.push(from)
+            if (['', '/'].includes(from)) {
+              history.push('/services')
+            } else {
+              history.push(from)
+            }
           } else {
             history.push('/services')
           }

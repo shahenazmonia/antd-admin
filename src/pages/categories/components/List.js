@@ -4,13 +4,16 @@ import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
+import UpdateCategory from '../update'
 
-@connect(({ loading, dispatch, categories }) => ({
+@connect(({ loading, categories }) => ({
   loading,
-  dispatch,
   categories,
 }))
 class List extends PureComponent {
+  state = {
+    updateFlag: false,
+  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -18,6 +21,23 @@ class List extends PureComponent {
       payload: {},
     })
   }
+
+  handleMenuClick = (record, e) => {
+    const { dispatch } = this.props
+    const { key } = e
+    if (key === '1') {
+      this.setState({
+        updateFlag: true,
+        data: record,
+      })
+    } else if (key === '2') {
+      dispatch({
+        type: 'categories/delete',
+        payload: { id: record._id },
+      })
+    }
+  }
+
   render() {
     const { categories, loading } = this.props
     const columns = [
@@ -82,17 +102,21 @@ class List extends PureComponent {
         },
       },
     ]
-
+    const { updateFlag, data } = this.state
     return (
-      <Spin spinning={loading?.global}>
-        <Table
-          pagination={true}
-          bordered
-          columns={columns}
-          dataSource={categories?.list}
-          simple
-          rowKey={(record) => record.id}
-        />
+      <Spin spinning={loading?.models?.categories}>
+        {updateFlag ? (
+          <UpdateCategory data={data} />
+        ) : (
+          <Table
+            pagination={true}
+            bordered
+            columns={columns}
+            dataSource={categories?.list}
+            simple
+            rowKey={(record) => record.id}
+          />
+        )}
       </Spin>
     )
   }

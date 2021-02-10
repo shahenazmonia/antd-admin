@@ -80,14 +80,14 @@ export default {
     *query({ payload }, { call, put, select }) {
       const { locationPathname } = yield select((_) => _.app)
       const user = store.get('user')
-      let permissions = {
+      const permissions = {
         visit: [],
       }
       permissions.visit = listOfRoute.map((item) => item.id)
       if (user) {
         store.set('routeList', listOfRoute)
         store.set('permissions', permissions)
-        Axios.defaults.headers.common.Authorization = user.token
+        Axios.defaults.headers.common.Authorization = `Bearer ${user.token}`
         store.set('isInit', true)
         goDashboard()
       } else if (queryLayout(config.layouts, locationPathname) !== 'public') {

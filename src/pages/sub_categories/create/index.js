@@ -15,17 +15,33 @@ class CreateSubCategory extends Component {
     })
   }
   onFinish = async (values) => {
-    await this.props.dispatch({
-      type: 'subCategories/create',
-      payload: { ...values, duration: parseInt(values.duration) },
+    const { dispatch, categories, data } = this.props
+    const currentValue = categories.list.filter((elm) => {
+      if (values.category == elm.nameEn) return elm._id
     })
+    if (data) {
+      await dispatch({
+        type: 'subCategories/update',
+        payload: {
+          ...values,
+          id: data._id,
+          duration: parseInt(values.duration),
+          category: currentValue[0] ? currentValue[0]._id : values.category,
+        },
+      })
+    } else {
+      await dispatch({
+        type: 'subCategories/create',
+        payload: { ...values, duration: parseInt(values.duration) },
+      })
+    }
   }
   render() {
-    const { categories, loading } = this.props
+    const { categories, loading, data } = this.props
     return (
       <div>
         <Page inner>
-          <Spin spinning={loading?.global}>
+          <Spin spinning={loading?.models?.categories}>
             <Row justify="center">
               <Col lg={12} md={12} xs={24} sm={24}>
                 <Form
@@ -37,6 +53,7 @@ class CreateSubCategory extends Component {
                   <span>Name Ar</span>
                   <Form.Item
                     name="nameAr"
+                    initialValue={data?.nameAr}
                     rules={[
                       { required: true, message: 'Please enter Ar. name' },
                     ]}
@@ -46,6 +63,7 @@ class CreateSubCategory extends Component {
                   <span>Name En</span>
                   <Form.Item
                     name="nameEn"
+                    initialValue={data?.nameEn}
                     rules={[
                       { required: true, message: 'Please enter En. name' },
                     ]}
@@ -57,6 +75,7 @@ class CreateSubCategory extends Component {
                   <Form.Item
                     name="duration"
                     type="number"
+                    initialValue={data?.duration}
                     rules={[
                       { required: true, message: 'Please enter the duration' },
                     ]}
@@ -66,6 +85,7 @@ class CreateSubCategory extends Component {
                   <span>Category</span>
                   <Form.Item
                     name="category"
+                    initialValue={data?.category?.nameEn}
                     rules={[
                       { required: true, message: 'Please select category' },
                     ]}

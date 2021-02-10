@@ -3,17 +3,38 @@ import PropTypes from 'prop-types'
 import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
-import { Link, connect } from 'umi'
-import styles from './List.less'
+import { history, Link, connect } from 'umi'
 
-@connect(({ loading, dispatch, services }) => ({ loading, dispatch, services }))
+import styles from './List.less'
+import UpdateService from '../update'
+
+@connect(({ loading, services }) => ({ loading, services }))
 class List extends PureComponent {
+  state = {
+    updateFlag: false,
+  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
       type: 'services/list',
       payload: {},
     })
+  }
+
+  handleMenuClick = (record, e) => {
+    const { dispatch } = this.props
+    const { key } = e
+    if (key === '1') {
+      this.setState({
+        updateFlag: true,
+        data: record,
+      })
+    } else if (key === '2') {
+      dispatch({
+        type: 'services/delete',
+        payload: { id: record._id },
+      })
+    }
   }
   render() {
     const { services, loading } = this.props
@@ -63,18 +84,22 @@ class List extends PureComponent {
         },
       },
     ]
-
+    const { updateFlag, data } = this.state
     return (
       <Spin spinning={loading?.global}>
-        <Table
-          pagination={true}
-          className={styles.table}
-          bordered
-          columns={columns}
-          dataSource={services?.list}
-          simple
-          rowKey={(record) => record.id}
-        />
+        {updateFlag ? (
+          <UpdateService data={data} />
+        ) : (
+          <Table
+            pagination={true}
+            className={styles.table}
+            bordered
+            columns={columns}
+            dataSource={services?.list}
+            simple
+            rowKey={(record) => record.id}
+          />
+        )}
       </Spin>
     )
   }
