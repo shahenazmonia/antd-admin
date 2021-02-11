@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { FilterItem } from 'components'
-import './List.less'
+import './list.less'
 import { Trans } from '@lingui/react'
 import { history, Link, withRouter } from 'umi'
 import {
