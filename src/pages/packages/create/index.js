@@ -29,6 +29,7 @@ class CreatePackage extends Component {
       discount,
       basePrice,
       numberOfVisits,
+      isOptional,
     } = values
     let formData = new FormData()
     const { dispatch, data, categories } = this.props
@@ -44,6 +45,7 @@ class CreatePackage extends Component {
     formData.append('discount', discount)
     formData.append('basePrice', basePrice)
     formData.append('numberOfVisits', numberOfVisits)
+    formData.append('isOptional', isOptional)
     // const currentValue = categories.list.filter((elm) => {
     //   if (values.category == elm.nameEn) return elm._id
     // })
@@ -200,7 +202,19 @@ class CreatePackage extends Component {
                       >
                         <Input type="number" />
                       </Form.Item>
-
+                      <span>is Optional</span>
+                      <Form.Item
+                        name="isOptional"
+                        initialValue={data?.isOptional}
+                        rules={[
+                          { required: true, message: 'Please enter En. name' },
+                        ]}
+                      >
+                        <Select>
+                          <Select.Option value="true">True</Select.Option>
+                          <Select.Option value="false">False</Select.Option>
+                        </Select>
+                      </Form.Item>
                       <span>Features</span>
                       <Form.List name="features" initialValue={data?.features}>
                         {(fields, { add, remove }) => (
