@@ -110,6 +110,6 @@
     "extract": "lingui extract",
     "trans": "lingui extract --clean && node ./scripts/translate.js",
     "doc": "docsify serve docs",
-    "heroku-postbuild": "yarn build"
+    "heroku-postbuild": "npm run build"
   }
 }
