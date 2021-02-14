@@ -5,7 +5,7 @@ import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { history, Link, connect } from 'umi'
 
-import styles from './List.less'
+import styles from './list.less'
 import UpdateService from '../update'
 
 @connect(({ loading, services }) => ({ loading, services }))
