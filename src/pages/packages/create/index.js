@@ -8,7 +8,7 @@ import './index.less'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 @connect(({ packages, loading }) => ({ packages, loading }))
-@connect(({ categories }) => ({ categories }))
+@connect(({ services }) => ({ services }))
 class CreatePackage extends Component {
   componentDidMount() {
     const { dispatch } = this.props
@@ -68,7 +68,7 @@ class CreatePackage extends Component {
   }
 
   render() {
-    const { categories, loading, data } = this.props
+    const { services, loading, data } = this.props
     return (
       <div>
         <Page inner>
@@ -224,17 +224,17 @@ class CreatePackage extends Component {
                                 <Col span={20}>
                                   <Form.Item
                                     {...field}
-                                    name={[field.name, 'category']}
-                                    fieldKey={[field.fieldKey, 'category']}
+                                    name={[field.name, 'service']}
+                                    fieldKey={[field.fieldKey, 'service']}
                                     rules={[
                                       {
                                         required: true,
-                                        message: 'please select category',
+                                        message: 'please select a service',
                                       },
                                     ]}
                                   >
-                                    <Select placeholder="Category">
-                                      {categories?.list?.map((elm, index) => {
+                                    <Select placeholder="Service">
+                                      {services?.list?.map((elm, index) => {
                                         return (
                                           <Select.Option
                                             key={index}

@@ -74,7 +74,7 @@ export default modelExtend(pageModel, {
         const data = yield call(updateCategory, payload)
         if (data.success) {
           yield delay(6000)
-          message.success('تم تعديل بيانات العميل بنجاح!')
+          message.success('Category has been updated successfuly')
           window.location.reload()
         } else {
           throw data
