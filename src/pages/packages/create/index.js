@@ -279,6 +279,27 @@ class CreatePackage extends Component {
                                       type="number"
                                     />
                                   </Form.Item>
+                                  <Form.Item
+                                    {...field}
+                                    name={[field.name, 'isOptional']}
+                                    fieldKey={[field.fieldKey, 'isOptional']}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message:
+                                          'please Select the optional field',
+                                      },
+                                    ]}
+                                  >
+                                    <Select placeholder="is Optional">
+                                      <Select.Option value="true">
+                                        True{' '}
+                                      </Select.Option>
+                                      <Select.Option value="false">
+                                        False{' '}
+                                      </Select.Option>
+                                    </Select>
+                                  </Form.Item>
                                 </Col>
                                 <Col span={3} offset={1}>
                                   <MinusCircleOutlined

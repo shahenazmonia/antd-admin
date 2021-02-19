@@ -4,16 +4,12 @@ import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
-import UpdateProvider from '../update'
 
 @connect(({ loading, ServiceProviders }) => ({
   loading,
   ServiceProviders,
 }))
 class List extends PureComponent {
-  state = {
-    updateFlag: false,
-  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -22,25 +18,8 @@ class List extends PureComponent {
     })
   }
 
-  handleMenuClick = (record, e) => {
-    const { dispatch } = this.props
-    const { key } = e
-    if (key === '1') {
-      // this.setState({
-      //   updateFlag: true,
-      //   data: record,
-      // })
-    } else if (key === '2') {
-      // dispatch({
-      //   type: 'ServiceProviders/delete',
-      //   payload: { id: record._id },
-      // })
-    }
-  }
-
   render() {
     const { ServiceProviders, loading } = this.props
-    const { updateFlag, data } = this.state
     const columns = [
       {
         title: <Trans>Image</Trans>,
@@ -119,39 +98,20 @@ class List extends PureComponent {
         title: <Trans>Status</Trans>,
         dataIndex: 'status',
         key: 'status',
-      },
-      {
-        title: <Trans>Operation</Trans>,
-        key: 'operation',
         fixed: 'right',
-        render: (text, record) => {
-          return (
-            <DropOption
-              onMenuClick={(e) => this.handleMenuClick(record, e)}
-              menuOptions={[
-                { key: '1', name: 'Update' },
-                { key: '2', name: 'Delete' },
-              ]}
-            />
-          )
-        },
       },
     ]
     return (
       <Spin spinning={loading?.models?.ServiceProviders}>
-        {updateFlag ? (
-          <UpdateProvider data={data} />
-        ) : (
-          <Table
-            pagination={true}
-            bordered
-            columns={columns}
-            dataSource={ServiceProviders?.list}
-            simple
-            rowKey={(record) => record.id}
-            scroll={{ x: 1800 }}
-          />
-        )}
+        <Table
+          pagination={true}
+          bordered
+          columns={columns}
+          dataSource={ServiceProviders?.list}
+          simple
+          rowKey={(record) => record.id}
+          scroll={{ x: 1800 }}
+        />
       </Spin>
     )
   }
