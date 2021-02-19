@@ -14,7 +14,6 @@ class Zone extends Component {
     const { nameAr, nameEn, Neighborhood } = values
     const { location } = this.state
     const { dispatch, data } = this.props
-    console.log('values-----', values)
     await dispatch({
       type: 'zone/create',
       payload: { nameAr, nameEn, location, Neighborhood },

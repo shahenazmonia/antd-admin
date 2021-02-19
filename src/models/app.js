@@ -15,7 +15,7 @@ const { logoutUser } = api
 const goDashboard = () => {
   if (pathToRegexp(['/', '/login']).exec(window.location.pathname)) {
     history.push({
-      pathname: '/dashboard',
+      pathname: '/services',
     })
   }
 }
