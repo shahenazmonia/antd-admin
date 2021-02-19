@@ -107,7 +107,10 @@ export default {
         store.set('permissions', { visit: [] })
         store.set('user', {})
         store.set('isInit', false)
-        yield put({ type: 'query' })
+        // yield put({ type: 'query' })
+        history.push({
+          pathname: '/login',
+        })
       } else {
         console.log('--------', data)
         throw data
