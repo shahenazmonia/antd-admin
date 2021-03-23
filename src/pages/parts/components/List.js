@@ -25,6 +25,7 @@ class List extends PureComponent {
   handleMenuClick = (record, e) => {
     const { dispatch } = this.props
     const { key } = e
+    console.log('key', key)
     if (key === '1') {
       this.setState({
         updateFlag: true,

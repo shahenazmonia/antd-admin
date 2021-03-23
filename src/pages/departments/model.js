@@ -48,7 +48,7 @@ export default modelExtend(pageModel, {
           message.success('Department Added Successfuly!')
           yield put(routerRedux.push('/departments'))
         } else {
-          throw data
+          message.error(data)
         }
       } catch (error) {
         console.log(error)
@@ -65,6 +65,7 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
+        message.error(error)
         // let { fields } = error
         // Object.keys(fields).map((field) => {
         //   fields[field].status === 'error' &&
@@ -93,7 +94,7 @@ export default modelExtend(pageModel, {
           payload: data.data.result,
         })
       } else {
-        throw data
+        message.error(data)
       }
     },
   },

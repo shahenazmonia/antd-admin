@@ -18,7 +18,16 @@ class Department extends Component {
   onFinish = async (values) => {
     let formData = new FormData()
     const { dispatch, data, services } = this.props
-    formData.append('image', this.state.image.file.originFileObj)
+    const file = {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: data?.image,
+    }
+    formData.append(
+      'image',
+      this.state.image.file ? this.state.image.file.originFileObj : file
+    )
     formData.append('nameAr', values.nameAr)
     formData.append('nameEn', values.nameEn)
     formData.append('type', values.type)

@@ -57,7 +57,7 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
-        console.log(error)
+        message.error(error)
       }
     },
     *update({ payload }, { put, call }) {
@@ -71,7 +71,7 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
-        console.log('error', error)
+        message.error(error)
       }
     },
   },

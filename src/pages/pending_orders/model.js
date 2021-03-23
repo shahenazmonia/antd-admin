@@ -20,57 +20,22 @@ export default modelExtend(pageModel, {
   effects: {
     *list({ payload }, { put, call }) {
       const data = yield call(pindingOrdersList, payload)
-      if (data.success) {
-        const { oders } = data
-        yield put({
-          type: 'updateState',
-          payload: {
-            list: oders,
-          },
-        })
-      } else {
-        throw data
+      try {
+        if (data.success) {
+          const { oders } = data
+          yield put({
+            type: 'updateState',
+            payload: {
+              list: oders,
+            },
+          })
+        } else {
+          throw data
+        }
+      } catch (error) {
+        message.error(error)
       }
     },
-    // *create({ payload }, { put, call }) {
-    //   try {
-    //     const data = yield call(createCategory, payload)
-    //     if (data.success) {
-    //       yield delay(6000)
-    //       message.success('Category has been Added Successfuly!')
-    //       yield put(routerRedux.push('/categories'))
-    //     } else {
-    //       throw data
-    //     }
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // },
-    // *delete({ payload }, { put, call }) {
-    //   const data = yield call(deleteCategory, payload)
-    //   if (data.success) {
-    //     yield put({
-    //       type: 'deleteFromList',
-    //       payload: data.data.result,
-    //     })
-    //   } else {
-    //     throw data
-    //   }
-    // },
-    // *update({ payload }, { put, call }) {
-    //   try {
-    //     const data = yield call(updateCategory, payload)
-    //     if (data.success) {
-    //       yield delay(6000)
-    //       message.success('تم تعديل بيانات العميل بنجاح!')
-    //       window.location.reload()
-    //     } else {
-    //       throw data
-    //     }
-    //   } catch (error) {
-    //     console.log('error', error)
-    //   }
-    // },
   },
   reducers: {
     deleteFromList(state, { payload }) {

@@ -19,17 +19,21 @@ export default modelExtend(pageModel, {
   },
   effects: {
     *list({ payload }, { put, call }) {
-      const data = yield call(invoicesList, payload)
-      if (data.success) {
-        const { result } = data
-        yield put({
-          type: 'updateState',
-          payload: {
-            list: result,
-          },
-        })
-      } else {
-        throw data
+      try {
+        const data = yield call(invoicesList, payload)
+        if (data.success) {
+          const { result } = data
+          yield put({
+            type: 'updateState',
+            payload: {
+              list: result,
+            },
+          })
+        } else {
+          throw data
+        }
+      } catch (error) {
+        message.error(error)
       }
     },
   },

@@ -18,7 +18,19 @@ class Category extends Component {
   onFinish = async (values) => {
     const { departments, dispatch, data } = this.props
     let formData = new FormData()
-    formData.append('image', this.state.image.file.originFileObj)
+
+    const file = {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: data?.image,
+    }
+
+    formData.append(
+      'image',
+      this.state.image.file ? this.state.image.file.originFileObj : file
+    )
+
     formData.append('nameAr', values.nameAr)
     formData.append('nameEn', values.nameEn)
     formData.append('price', values.price)

@@ -11,12 +11,17 @@ class Service extends Component {
   onFinish = async (values) => {
     const { dispatch, data } = this.props
     let formData = new FormData()
-    console.log('this.state.image', this.state.image)
+
+    const file = {
+      uid: new Date(),
+      name: 'image.png',
+      status: 'done',
+      url: data?.image,
+    }
+
     formData.append(
       'image',
-      this.state.image.file
-        ? this.state.image.file.originFileObj
-        : this.state.image
+      this.state.image.file ? this.state.image.file.originFileObj : file
     )
     formData.append('nameAr', values.nameAr)
     formData.append('nameEn', values.nameEn)

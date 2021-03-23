@@ -114,5 +114,9 @@
     "trans": "lingui extract --clean && node ./scripts/translate.js",
     "doc": "docsify serve docs",
     "heroku-postbuild": "npm run build"
+  },
+  "browserslist": [],
+  "resolutions": {
+    "webpack-dev-server": "3.11.0"
   }
 }

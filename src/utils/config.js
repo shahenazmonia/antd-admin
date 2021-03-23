@@ -1,7 +1,7 @@
 module.exports = {
   siteName: 'Maintenance',
   logoPath: '/logo.svg',
-  apiUrl: 'https://services7-test-app.herokuapp.com',
+  apiUrl: 'http://54.86.72.136:5000',
   apiPrefix: '/api',
   fixedHeader: true, // sticky primary layout header
 

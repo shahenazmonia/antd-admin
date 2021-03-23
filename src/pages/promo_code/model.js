@@ -20,30 +20,24 @@ export default modelExtend(pageModel, {
   effects: {
     *list({ payload }, { put, call }) {
       const data = yield call(promoList, payload)
-      if (data.success) {
-        const { promoCodes, categoryLength } = data
-        yield put({
-          type: 'updateState',
-          payload: {
-            list: promoCodes,
-            total: categoryLength,
-          },
-        })
-      } else {
-        throw data
+      try {
+        if (data.success) {
+          const { promoCodes, categoryLength } = data
+          yield put({
+            type: 'updateState',
+            payload: {
+              list: promoCodes,
+              total: categoryLength,
+            },
+          })
+        } else {
+          throw data
+        }
+      } catch (error) {
+        message.error(error)
       }
     },
-    // *toggleClients({ payload }, { put, call }) {
-    //   const data = yield call(toggleClientsStatus, payload)
-    //   if (data.success) {
-    //     yield put({
-    //       type: 'toggleEnableDisableClients',
-    //       payload: data.data,
-    //     })
-    //   } else {
-    //     throw data
-    //   }
-    // },
+
     *create({ payload }, { put, call }) {
       try {
         const data = yield call(createPromoCode, payload)
@@ -55,18 +49,22 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
-        console.log(error)
+        message.error(error)
       }
     },
     *delete({ payload }, { put, call }) {
       const data = yield call(deletePromoCode, payload)
-      if (data.success) {
-        yield put({
-          type: 'deleteFromList',
-          payload: data.data.result,
-        })
-      } else {
-        throw data
+      try {
+        if (data.success) {
+          yield put({
+            type: 'deleteFromList',
+            payload: data.data.result,
+          })
+        } else {
+          throw data
+        }
+      } catch (error) {
+        message.error(error)
       }
     },
     *update({ payload }, { put, call }) {
@@ -80,7 +78,7 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
-        console.log('error', error)
+        message.error(error)
       }
     },
   },

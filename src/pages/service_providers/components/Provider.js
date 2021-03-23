@@ -7,11 +7,16 @@ import { Avatar } from '../../services/components/upload'
 
 @connect(({ ServiceProviders, loading }) => ({ ServiceProviders, loading }))
 @connect(({ services }) => ({ services }))
+@connect(({ zone }) => ({ zone }))
 class Provider extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
       type: 'services/list',
+      payload: {},
+    })
+    dispatch({
+      type: 'zone/list',
       payload: {},
     })
   }
@@ -32,6 +37,7 @@ class Provider extends Component {
       companyName,
       CR,
       services,
+      zone,
     } = values
     formData.append('image', this.state.image.file.originFileObj)
     formData.append('fullNameAr', fullNameAr)
@@ -46,6 +52,7 @@ class Provider extends Component {
     formData.append('streetName', streetName)
     formData.append('companyName', companyName)
     formData.append('services', services)
+    formData.append('zone', zone)
     formData.append('CR', CR)
     formData.append('type', type)
 
@@ -63,7 +70,7 @@ class Provider extends Component {
     })
   }
   render() {
-    const { services, loading, data } = this.props
+    const { services, zone, loading, data } = this.props
     return (
       <Page inner>
         <Spin spinning={loading?.global}>
@@ -229,6 +236,24 @@ class Provider extends Component {
                     >
                       <Select>
                         {services?.list?.map((elm, index) => {
+                          return (
+                            <Select.Option key={index} value={elm._id}>
+                              {elm.nameEn}
+                            </Select.Option>
+                          )
+                        })}
+                      </Select>
+                    </Form.Item>
+                    <span>Zone</span>
+                    <Form.Item
+                      name="zone"
+                      initialValue={data?.zone?.nameEn}
+                      rules={[
+                        { required: true, message: 'Please select a services' },
+                      ]}
+                    >
+                      <Select>
+                        {zone?.list?.map((elm, index) => {
                           return (
                             <Select.Option key={index} value={elm._id}>
                               {elm.nameEn}

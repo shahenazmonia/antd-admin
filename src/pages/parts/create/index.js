@@ -31,8 +31,19 @@ class CreatePart extends Component {
     } = values
     let formData = new FormData()
     const { dispatch, data, categories } = this.props
+
+    const file = {
+      uid: new Date(),
+      name: 'image.png',
+      status: 'done',
+      url: data?.image,
+    }
+
+    formData.append(
+      'image',
+      this.state.image.file ? this.state.image.file.originFileObj : file
+    )
     console.log('categories', categories)
-    formData.append('image', this.state.image.file.originFileObj)
     formData.append('nameAr', nameAr)
     formData.append('nameEn', nameEn)
     formData.append('price', price)

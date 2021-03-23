@@ -22,28 +22,36 @@ export default modelExtend(pageModel, {
   effects: {
     *list({ payload }, { put, call }) {
       const data = yield call(offersList, payload)
-      if (data.success) {
-        const { offers, offersLength } = data
-        yield put({
-          type: 'updateState',
-          payload: {
-            list: offers,
-            total: offersLength,
-          },
-        })
-      } else {
-        throw data
+      try {
+        if (data.success) {
+          const { offers, offersLength } = data
+          yield put({
+            type: 'updateState',
+            payload: {
+              list: offers,
+              total: offersLength,
+            },
+          })
+        } else {
+          throw data
+        }
+      } catch (error) {
+        message.error(error)
       }
     },
     *delete({ payload }, { put, call }) {
-      const data = yield call(deleteOffer, payload)
-      if (data.success) {
-        yield put({
-          type: 'deleteFromList',
-          payload: data.data.result,
-        })
-      } else {
-        throw data
+      try {
+        const data = yield call(deleteOffer, payload)
+        if (data.success) {
+          yield put({
+            type: 'deleteFromList',
+            payload: data.data.result,
+          })
+        } else {
+          throw data
+        }
+      } catch (error) {
+        message.error(error)
       }
     },
     *create({ payload }, { put, call }) {
@@ -57,7 +65,7 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
-        console.log(error)
+        message.error(error)
       }
     },
     *update({ payload }, { put, call }) {
@@ -71,7 +79,7 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
-        console.log('error', error)
+        message.error(error)
       }
     },
   },

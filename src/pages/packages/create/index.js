@@ -10,10 +10,13 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 @connect(({ packages, loading }) => ({ packages, loading }))
 @connect(({ services }) => ({ services }))
 class CreatePackage extends Component {
+  state = {
+    image: {},
+  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
-      type: 'categories/list',
+      type: 'services/list',
       payload: {},
     })
   }
@@ -31,28 +34,32 @@ class CreatePackage extends Component {
       numberOfVisits,
       isOptional,
     } = values
+
     let formData = new FormData()
-    const { dispatch, data, categories } = this.props
-    console.log('values', values)
-    formData.append('image', this.state.image.file.originFileObj)
+    const { dispatch, data } = this.props
+    const file = {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: data?.image,
+    }
+
+    formData.append(
+      'image',
+      this.state.image.file ? this.state.image.file.originFileObj : file
+    )
     formData.append('nameAr', nameAr)
     formData.append('nameEn', nameEn)
     formData.append('type', type)
     formData.append('descriptionAr', descriptionAr)
     formData.append('descriptionEn', descriptionEn)
     formData.append('duration', duration)
-    formData.append('features', features)
+    // formData.append('features', features)
     formData.append('discount', discount)
     formData.append('basePrice', basePrice)
     formData.append('numberOfVisits', numberOfVisits)
     formData.append('isOptional', isOptional)
-    // const currentValue = categories.list.filter((elm) => {
-    //   if (values.category == elm.nameEn) return elm._id
-    // })
-    // formData.append(
-    //   'category',
-    //   currentValue[0] ? currentValue[0]._id : values.category
-    // )
+
     if (data) {
       formData.append('id', data._id)
       await dispatch({
