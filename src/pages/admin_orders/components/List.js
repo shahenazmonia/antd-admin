@@ -4,6 +4,7 @@ import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
+import moment from 'moment'
 
 @connect(({ loading, adminOrders }) => ({
   loading,
@@ -23,30 +24,6 @@ class List extends PureComponent {
 
     const columns = [
       {
-        title: <Trans>Order Type</Trans>,
-        dataIndex: 'orderType',
-        key: 'orderType',
-        render: (text, record) => <Link to={``}>{text}</Link>,
-      },
-      {
-        title: <Trans>Location Type</Trans>,
-        dataIndex: ['location', 'type'],
-        key: 'type',
-        render: (text, record) => <Link to={``}>{text}</Link>,
-      },
-      {
-        title: <Trans>Location Coordinates</Trans>,
-        dataIndex: ['location', 'coordinates'],
-        key: 'coordinates',
-        render: (text, record) => <Link to={``}>{text}</Link>,
-      },
-      {
-        title: <Trans>Email</Trans>,
-        dataIndex: ['user', 'email'],
-        key: 'userEmail',
-        render: (text, record) => <Link to={``}>{text}</Link>,
-      },
-      {
         title: <Trans>First Name</Trans>,
         dataIndex: ['user', 'firstName'],
         key: 'firstName',
@@ -59,34 +36,79 @@ class List extends PureComponent {
         render: (text, record) => <Link to={``}>{text}</Link>,
       },
       {
-        title: <Trans>House Type</Trans>,
-        dataIndex: ['user', 'houseType'],
-        key: 'houseType',
+        title: <Trans>Email</Trans>,
+        dataIndex: ['user', 'email'],
+        key: 'userEmail',
         render: (text, record) => <Link to={``}>{text}</Link>,
       },
       {
-        title: <Trans>House Number</Trans>,
-        dataIndex: ['user', 'houseNumber'],
-        key: 'houseNumber',
+        title: <Trans>Phone Number</Trans>,
+        dataIndex: ['user', 'phoneNumber'],
+        key: 'phoneNumber',
         render: (text, record) => <Link to={``}>{text}</Link>,
       },
       {
-        title: <Trans>isConfirmed</Trans>,
-        dataIndex: ['user', 'isConfirmed'],
-        key: 'isConfirmed',
+        title: <Trans>Order Type</Trans>,
+        dataIndex: 'orderType',
+        key: 'orderType',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>Invoice ID</Trans>,
+        dataIndex: ['invoice', '_id'],
+        key: 'invoice',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>isPaid</Trans>,
+        dataIndex: ['invoice', 'isPaid'],
+        key: 'invoice',
         render: (text, record) => (
-          <Link to={``}>{text === true ? 'Confirmed' : 'not Confirmed'}</Link>
+          <Link to={``}>{text == true ? 'paid' : 'unpaid'}</Link>
         ),
       },
       {
-        title: <Trans>onModel</Trans>,
-        dataIndex: 'onModel',
-        key: 'onModel',
-      },
-      {
-        title: <Trans>order Status</Trans>,
+        title: <Trans>Order Status</Trans>,
         dataIndex: 'orderStatus',
         key: 'orderStatus',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>Order Category</Trans>,
+        dataIndex: ['orderDetails', 'category'],
+        key: 'category',
+        render: (categories, record) => (
+          <Link to={``}>{categories.map((elm) => elm.nameEn)}</Link>
+        ),
+      },
+      {
+        title: <Trans>Order Category</Trans>,
+        dataIndex: ['orderDetails', 'category'],
+        key: 'category',
+        render: (categories, record) => (
+          <Link to={``}>{categories.map((elm) => elm.nameAr)}</Link>
+        ),
+      },
+      {
+        title: <Trans>Time Of Order</Trans>,
+        dataIndex: ['timeOfOrder', 'date'],
+        key: 'date',
+        render: (text, record) => (
+          <Link to={``}>{moment(text).format('YYYY MM DD')}</Link>
+        ),
+      },
+      {
+        title: <Trans>Time Of Order</Trans>,
+        dataIndex: ['timeOfOrder', 'start'],
+        key: 'date',
+      },
+      {
+        title: <Trans>Provider</Trans>,
+        dataIndex: 'provider',
+        key: 'provider',
+        render: (text, record) => (
+          <Link to={``}>{text ? text : 'Pending'}</Link>
+        ),
         fixed: 'right',
       },
     ]
