@@ -8,12 +8,15 @@ import './index.less'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 @connect(({ packages, loading }) => ({ packages, loading }))
-@connect(({ categories }) => ({ categories }))
+@connect(({ services }) => ({ services }))
 class CreatePackage extends Component {
+  state = {
+    image: {},
+  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
-      type: 'categories/list',
+      type: 'services/list',
       payload: {},
     })
   }
@@ -31,28 +34,32 @@ class CreatePackage extends Component {
       numberOfVisits,
       isOptional,
     } = values
+
     let formData = new FormData()
-    const { dispatch, data, categories } = this.props
-    console.log('values', values)
-    formData.append('image', this.state.image.file.originFileObj)
+    const { dispatch, data } = this.props
+    const file = {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: data?.image,
+    }
+
+    formData.append(
+      'image',
+      this.state.image.file ? this.state.image.file.originFileObj : file
+    )
     formData.append('nameAr', nameAr)
     formData.append('nameEn', nameEn)
     formData.append('type', type)
     formData.append('descriptionAr', descriptionAr)
     formData.append('descriptionEn', descriptionEn)
     formData.append('duration', duration)
-    formData.append('features', features)
+    // formData.append('features', features)
     formData.append('discount', discount)
     formData.append('basePrice', basePrice)
     formData.append('numberOfVisits', numberOfVisits)
     formData.append('isOptional', isOptional)
-    // const currentValue = categories.list.filter((elm) => {
-    //   if (values.category == elm.nameEn) return elm._id
-    // })
-    // formData.append(
-    //   'category',
-    //   currentValue[0] ? currentValue[0]._id : values.category
-    // )
+
     if (data) {
       formData.append('id', data._id)
       await dispatch({
@@ -68,7 +75,7 @@ class CreatePackage extends Component {
   }
 
   render() {
-    const { categories, loading, data } = this.props
+    const { services, loading, data } = this.props
     return (
       <div>
         <Page inner>
@@ -224,17 +231,17 @@ class CreatePackage extends Component {
                                 <Col span={20}>
                                   <Form.Item
                                     {...field}
-                                    name={[field.name, 'category']}
-                                    fieldKey={[field.fieldKey, 'category']}
+                                    name={[field.name, 'service']}
+                                    fieldKey={[field.fieldKey, 'service']}
                                     rules={[
                                       {
                                         required: true,
-                                        message: 'please select category',
+                                        message: 'please select a service',
                                       },
                                     ]}
                                   >
-                                    <Select placeholder="Category">
-                                      {categories?.list?.map((elm, index) => {
+                                    <Select placeholder="Service">
+                                      {services?.list?.map((elm, index) => {
                                         return (
                                           <Select.Option
                                             key={index}
@@ -278,6 +285,27 @@ class CreatePackage extends Component {
                                       placeholder="Number Of Visits"
                                       type="number"
                                     />
+                                  </Form.Item>
+                                  <Form.Item
+                                    {...field}
+                                    name={[field.name, 'isOptional']}
+                                    fieldKey={[field.fieldKey, 'isOptional']}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message:
+                                          'please Select the optional field',
+                                      },
+                                    ]}
+                                  >
+                                    <Select placeholder="is Optional">
+                                      <Select.Option value="true">
+                                        True{' '}
+                                      </Select.Option>
+                                      <Select.Option value="false">
+                                        False{' '}
+                                      </Select.Option>
+                                    </Select>
                                   </Form.Item>
                                 </Col>
                                 <Col span={3} offset={1}>

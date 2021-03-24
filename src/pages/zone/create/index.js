@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Category from '../components/Category'
+import Zone from '../components/Zone'
 
-class CreateCategory extends Component {
+class CreateZone extends Component {
   render() {
     return (
       <div>
-        <Category />
+        <Zone />
       </div>
     )
   }
 }
 
-CreateCategory.propTypes = {
+CreateZone.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
 }
 
-export default CreateCategory
+export default CreateZone

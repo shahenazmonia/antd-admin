@@ -6,10 +6,10 @@ import { routerRedux } from 'dva/router'
 import { delay } from 'redux-saga'
 import _ from 'lodash'
 
-const { promoList, createPromoCode, deletePromoCode, updatePromoCode } = api
+const { zoneList, createZone } = api
 
 export default modelExtend(pageModel, {
-  namespace: 'promoCode',
+  namespace: 'zone',
 
   state: {
     list: [],
@@ -19,15 +19,14 @@ export default modelExtend(pageModel, {
   },
   effects: {
     *list({ payload }, { put, call }) {
-      const data = yield call(promoList, payload)
+      const data = yield call(zoneList, payload)
       try {
         if (data.success) {
-          const { promoCodes, categoryLength } = data
+          const { zones } = data
           yield put({
             type: 'updateState',
             payload: {
-              list: promoCodes,
-              total: categoryLength,
+              list: zones,
             },
           })
         } else {
@@ -37,43 +36,13 @@ export default modelExtend(pageModel, {
         message.error(error)
       }
     },
-
     *create({ payload }, { put, call }) {
       try {
-        const data = yield call(createPromoCode, payload)
+        const data = yield call(createZone, payload)
         if (data.success) {
           yield delay(6000)
-          message.success('Promo Code has been Added Successfuly!')
-          yield put(routerRedux.push('/promo_code'))
-        } else {
-          throw data
-        }
-      } catch (error) {
-        message.error(error)
-      }
-    },
-    *delete({ payload }, { put, call }) {
-      const data = yield call(deletePromoCode, payload)
-      try {
-        if (data.success) {
-          yield put({
-            type: 'deleteFromList',
-            payload: data.data.result,
-          })
-        } else {
-          throw data
-        }
-      } catch (error) {
-        message.error(error)
-      }
-    },
-    *update({ payload }, { put, call }) {
-      try {
-        const data = yield call(updatePromoCode, payload)
-        if (data.success) {
-          yield delay(6000)
-          message.success('data has been updated successfully')
-          window.location.reload()
+          message.success('Zone has been Added Successfuly!')
+          yield put(routerRedux.push('/zone'))
         } else {
           throw data
         }

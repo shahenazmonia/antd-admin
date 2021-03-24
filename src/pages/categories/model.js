@@ -19,31 +19,24 @@ export default modelExtend(pageModel, {
   },
   effects: {
     *list({ payload }, { put, call }) {
-      const data = yield call(categoriesList, payload)
-      if (data.success) {
-        const { categories, categoryLength } = data
-        yield put({
-          type: 'updateState',
-          payload: {
-            list: categories,
-            total: categoryLength,
-          },
-        })
-      } else {
-        throw data
+      try {
+        const data = yield call(categoriesList, payload)
+        if (data.success) {
+          const { categories, categoryLength } = data
+          yield put({
+            type: 'updateState',
+            payload: {
+              list: categories,
+              total: categoryLength,
+            },
+          })
+        } else {
+          throw data
+        }
+      } catch (error) {
+        message.error(error)
       }
     },
-    // *toggleClients({ payload }, { put, call }) {
-    //   const data = yield call(toggleClientsStatus, payload)
-    //   if (data.success) {
-    //     yield put({
-    //       type: 'toggleEnableDisableClients',
-    //       payload: data.data,
-    //     })
-    //   } else {
-    //     throw data
-    //   }
-    // },
     *create({ payload }, { put, call }) {
       try {
         const data = yield call(createCategory, payload)
@@ -55,18 +48,22 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
-        console.log(error)
+        message.error(error)
       }
     },
     *delete({ payload }, { put, call }) {
-      const data = yield call(deleteCategory, payload)
-      if (data.success) {
-        yield put({
-          type: 'deleteFromList',
-          payload: data.data.result,
-        })
-      } else {
-        throw data
+      try {
+        const data = yield call(deleteCategory, payload)
+        if (data.success) {
+          yield put({
+            type: 'deleteFromList',
+            payload: data.data.result,
+          })
+        } else {
+          throw data
+        }
+      } catch (error) {
+        message.error(error)
       }
     },
     *update({ payload }, { put, call }) {
@@ -74,13 +71,13 @@ export default modelExtend(pageModel, {
         const data = yield call(updateCategory, payload)
         if (data.success) {
           yield delay(6000)
-          message.success('تم تعديل بيانات العميل بنجاح!')
+          message.success('Category has been updated successfuly')
           window.location.reload()
         } else {
           throw data
         }
       } catch (error) {
-        console.log('error', error)
+        message.error(error)
       }
     },
   },

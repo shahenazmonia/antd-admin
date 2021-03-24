@@ -31,11 +31,11 @@ class Filter extends Component {
                       className="add-button"
                       onClick={() =>
                         history.push({
-                          pathname: '/categories/create',
+                          pathname: '/zone/create',
                         })
                       }
                     >
-                      <Trans> + Add Invoice</Trans>
+                      <Trans> + Add Zone</Trans>
                     </Button>
                   </div>
                 </Col>

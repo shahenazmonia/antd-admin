@@ -10,9 +10,6 @@ import { Link, connect } from 'umi'
   pendingOrders,
 }))
 class List extends PureComponent {
-  state = {
-    updateFlag: false,
-  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
@@ -21,18 +18,9 @@ class List extends PureComponent {
     })
   }
 
-  handleMenuClick = (record, e) => {
-    const { dispatch } = this.props
-    const { key } = e
-    if (key === '1') {
-    } else if (key === '2') {
-    }
-  }
-
   render() {
     const { pendingOrders, loading } = this.props
-    const { updateFlag, data } = this.state
-    console.log('orders', pendingOrders)
+
     const columns = [
       {
         title: <Trans>Order Type</Trans>,
@@ -99,22 +87,7 @@ class List extends PureComponent {
         title: <Trans>order Status</Trans>,
         dataIndex: 'orderStatus',
         key: 'orderStatus',
-      },
-      {
-        title: <Trans>Operation</Trans>,
-        key: 'operation',
         fixed: 'right',
-        render: (text, record) => {
-          return (
-            <DropOption
-              onMenuClick={(e) => this.handleMenuClick(record, e)}
-              menuOptions={[
-                { key: '1', name: 'Update' },
-                { key: '2', name: 'Delete' },
-              ]}
-            />
-          )
-        },
       },
     ]
     return (

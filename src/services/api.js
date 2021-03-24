@@ -61,4 +61,7 @@ export default {
   providersList: 'GET /getProviders',
   createProvider: 'POST /createNewProvider',
   invoicesList: 'POST /getInvoices',
+
+  zoneList: 'GET /getAllZones',
+  createZone: 'POST /postNewZone',
 }

@@ -22,17 +22,21 @@ export default modelExtend(pageModel, {
   effects: {
     *list({ payload }, { put, call }) {
       const data = yield call(servicesList, payload)
-      if (data.success) {
-        const { services, serviceLength } = data
-        yield put({
-          type: 'updateState',
-          payload: {
-            list: services,
-            total: serviceLength,
-          },
-        })
-      } else {
-        throw data
+      try {
+        if (data.success) {
+          const { services, serviceLength } = data
+          yield put({
+            type: 'updateState',
+            payload: {
+              list: services,
+              total: serviceLength,
+            },
+          })
+        } else {
+          message.error(data)
+        }
+      } catch (error) {
+        message.error(error)
       }
     },
     *create({ payload }, { put, call }) {
@@ -46,18 +50,22 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
-        console.log(error)
+        message.error(error)
       }
     },
     *delete({ payload }, { put, call }) {
       const data = yield call(deleteService, payload)
-      if (data.success) {
-        yield put({
-          type: 'deleteServicesFromList',
-          payload: data.data.result,
-        })
-      } else {
-        throw data
+      try {
+        if (data.success) {
+          yield put({
+            type: 'deleteServicesFromList',
+            payload: data.data.result,
+          })
+        } else {
+          throw data
+        }
+      } catch (error) {
+        message.error(error)
       }
     },
     *update({ payload }, { put, call }) {
@@ -71,6 +79,7 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
+        message.error(error)
         // let { fields } = error
         // // Object.keys(fields).map((field) => {
         // //   fields[field].status === 'error' &&
@@ -91,19 +100,6 @@ export default modelExtend(pageModel, {
         // })
       }
     },
-    // *details({ payload }, { put, call }) {
-    //   const data = yield call(getService, payload)
-    //   if (data.success) {
-    //     yield put({
-    //       type: 'updateState',
-    //       payload: {
-    //         details: data.data,
-    //       },
-    //     })
-    //   } else {
-    //     throw data
-    //   }
-    // },
   },
   reducers: {
     updateState(state, { payload }) {

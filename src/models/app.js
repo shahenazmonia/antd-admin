@@ -15,7 +15,7 @@ const { logoutUser } = api
 const goDashboard = () => {
   if (pathToRegexp(['/', '/login']).exec(window.location.pathname)) {
     history.push({
-      pathname: '/dashboard',
+      pathname: '/services',
     })
   }
 }
@@ -107,7 +107,10 @@ export default {
         store.set('permissions', { visit: [] })
         store.set('user', {})
         store.set('isInit', false)
-        yield put({ type: 'query' })
+        // yield put({ type: 'query' })
+        history.push({
+          pathname: '/login',
+        })
       } else {
         console.log('--------', data)
         throw data

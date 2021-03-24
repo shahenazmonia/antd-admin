@@ -26,7 +26,6 @@ export class Avatar extends React.Component {
 
   componentDidMount() {
     const { image } = this.props
-    console.log('imdddd', image)
     if (image) {
       this.props.getImage(image)
     }
@@ -38,6 +37,7 @@ export class Avatar extends React.Component {
       return
     }
     if (info.file.status === 'done') {
+      console.log('file', info)
       this.props && this.props.getImage(info)
       getBase64(info.file.originFileObj, (imageUrl) =>
         this.setState({
@@ -73,7 +73,7 @@ export class Avatar extends React.Component {
         beforeUpload={beforeUpload}
         onChange={this.handleChange}
       >
-        {imageUrl ? (
+        {imageUrl || image ? (
           <img
             src={imageUrl ? imageUrl : image}
             alt="avatar"

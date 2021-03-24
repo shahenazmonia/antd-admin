@@ -3,22 +3,25 @@ import PropTypes from 'prop-types'
 import { connect } from 'umi'
 import { Page } from 'components'
 import List from './components/List'
+import Filter from './components/Filter'
 
-@connect(({ invoices, loading }) => ({ invoices, loading }))
-class Invoices extends Component {
+@connect(({ zone, loading }) => ({ zone, loading }))
+class Zones extends Component {
   render() {
     return (
       <Page inner>
+        <Filter />
         <List />
       </Page>
     )
   }
 }
 
-Invoices.propTypes = {
+Zones.propTypes = {
+  user: PropTypes.object,
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
 }
 
-export default Invoices
+export default Zones

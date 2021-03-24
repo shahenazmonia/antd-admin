@@ -30,7 +30,16 @@ class CreateOffer extends Component {
       endDate,
       discount,
     } = values
-    formData.append('image', this.state.image.file.originFileObj)
+    const file = {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: data?.image,
+    }
+    formData.append(
+      'image',
+      this.state.image.file ? this.state.image.file.originFileObj : file
+    )
     formData.append('nameAr', nameAr)
     formData.append('nameEn', nameEn)
     formData.append('descriptionAr', descriptionAr)

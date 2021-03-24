@@ -8,7 +8,7 @@ import { routerRedux } from 'dva/router'
 import { delay } from 'redux-saga'
 import _ from 'lodash'
 
-const { partsList, createPart, updatePart } = api
+const { partsList, createPart, updatePart, deletePart } = api
 
 export default modelExtend(pageModel, {
   namespace: 'parts',
@@ -21,18 +21,22 @@ export default modelExtend(pageModel, {
   },
   effects: {
     *list({ payload }, { put, call }) {
-      const data = yield call(partsList, payload)
-      if (data.success) {
-        const { Parts, partsLength } = data
-        yield put({
-          type: 'updateState',
-          payload: {
-            list: Parts,
-            total: partsLength,
-          },
-        })
-      } else {
-        throw data
+      try {
+        const data = yield call(partsList, payload)
+        if (data.success) {
+          const { Parts, partsLength } = data
+          yield put({
+            type: 'updateState',
+            payload: {
+              list: Parts,
+              total: partsLength,
+            },
+          })
+        } else {
+          throw data
+        }
+      } catch (error) {
+        message.error(error)
       }
     },
     *create({ payload }, { put, call }) {
@@ -46,7 +50,7 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
-        console.log(error)
+        message.error(error)
       }
     },
     *update({ payload }, { put, call }) {
@@ -61,7 +65,19 @@ export default modelExtend(pageModel, {
           throw data
         }
       } catch (error) {
-        console.log('error', error)
+        message.error(error)
+      }
+    },
+    *delete({ payload }, { put, call }) {
+      const data = yield call(deletePart, payload)
+      if (data.success) {
+        yield put({
+          type: 'deleteFromList',
+          payload: data.data.result,
+        })
+        window.location.reload()
+      } else {
+        message.error(data)
       }
     },
   },
@@ -70,6 +86,16 @@ export default modelExtend(pageModel, {
       return {
         ...state,
         ...payload,
+      }
+    },
+    deleteFromList(state, { payload }) {
+      const newState = JSON.parse(JSON.stringify(state))
+      const { list } = newState
+      const newList =
+        list && _.isArray(list) && list.filter((row) => row._id !== payload.id)
+      return {
+        ...state,
+        list: newList,
       }
     },
   },

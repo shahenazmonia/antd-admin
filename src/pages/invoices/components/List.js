@@ -4,42 +4,22 @@ import { Table, Avatar, Spin } from 'antd'
 import { DropOption } from 'components'
 import { Trans } from '@lingui/react'
 import { Link, connect } from 'umi'
-import UpdateCategory from '../update'
 
 @connect(({ loading, invoices }) => ({
   loading,
   invoices,
 }))
 class List extends PureComponent {
-  state = {
-    updateFlag: false,
-  }
   componentDidMount() {
     const { dispatch } = this.props
     dispatch({
       type: 'invoices/list',
-      payload: { order: '', type: '' },
+      payload: {},
     })
   }
 
-  handleMenuClick = (record, e) => {
-    const { dispatch } = this.props
-    const { key } = e
-    if (key === '1') {
-      this.setState({
-        updateFlag: true,
-        data: record,
-      })
-    } else if (key === '2') {
-      dispatch({
-        type: 'categories/delete',
-        payload: { id: record._id },
-      })
-    }
-  }
-
   render() {
-    const { categories, loading } = this.props
+    const { invoices, loading } = this.props
     const columns = [
       {
         title: <Trans>Image</Trans>,
@@ -49,74 +29,54 @@ class List extends PureComponent {
         render: (text) => <Avatar style={{ marginLeft: 8 }} src={text} />,
       },
       {
-        title: <Trans>Name Ar</Trans>,
-        dataIndex: 'nameAr',
-        key: 'nameAr',
+        title: <Trans>First Name</Trans>,
+        dataIndex: ['user', 'firstName'],
+        key: 'firstName',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>Last Name</Trans>,
+        dataIndex: ['user', 'lastName'],
+        key: 'lastName',
+        render: (text, record) => <Link to={``}>{text}</Link>,
+      },
+      {
+        title: <Trans>is Paid</Trans>,
+        dataIndex: 'isPaid',
+        key: 'isPaid',
         render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
+          <Link to={``}>{text === true ? 'Paid' : 'Un Paid'}</Link>
         ),
       },
       {
-        title: <Trans>Name En</Trans>,
-        dataIndex: 'nameEn',
-        key: 'nameEn',
-        render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
-        ),
+        title: <Trans>Model</Trans>,
+        dataIndex: 'onModel',
+        key: 'onModel',
+        render: (text, record) => <Link to={``}>{text}</Link>,
       },
       {
-        title: <Trans>Price</Trans>,
-        dataIndex: 'price',
-        key: 'price',
-        render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
-        ),
+        title: <Trans>total Amount</Trans>,
+        dataIndex: 'totalAmount',
+        key: 'totalAmount',
+        render: (text, record) => <Link to={``}>{text}</Link>,
       },
       {
-        title: <Trans>Department</Trans>,
-        dataIndex: ['department', 'nameEn'],
-        key: 'department',
-        render: (text, record) => (
-          <Link to={`category/${record.id}`}>{text}</Link>
-        ),
-      },
-      {
-        title: <Trans>Status</Trans>,
-        dataIndex: 'status',
-        key: 'status',
-      },
-      {
-        title: <Trans>Operation</Trans>,
-        key: 'operation',
-        fixed: 'right',
-        render: (text, record) => {
-          return (
-            <DropOption
-              onMenuClick={(e) => this.handleMenuClick(record, e)}
-              menuOptions={[
-                { key: '1', name: 'Update' },
-                { key: '2', name: 'Delete' },
-              ]}
-            />
-          )
-        },
+        title: <Trans>Total Amount With Tax</Trans>,
+        dataIndex: 'totalAmountWithTax',
+        key: 'totalAmountWithTax',
+        render: (text, record) => <Link to={``}>{text}</Link>,
       },
     ]
-    const { updateFlag, data } = this.state
     return (
-      <Spin spinning={false}>
-        {updateFlag ? (
-          <UpdateCategory data={data} />
-        ) : (
-          <Table
-            pagination={true}
-            bordered
-            columns={columns}
-            dataSource={categories?.list}
-            simple
-            rowKey={(record) => record.id}
-          />
-        )}
+      <Spin spinning={loading?.models?.invoices}>
+        <Table
+          pagination={true}
+          bordered
+          columns={columns}
+          dataSource={invoices?.list}
+          simple
+          rowKey={(record) => record.id}
+        />
       </Spin>
     )
   }

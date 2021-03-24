@@ -6,6 +6,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@lingui/react": "^2.8.0",
+    "@react-google-maps/api": "^2.1.1",
     "antd": "^4.0.0",
     "axios": "^0.19.0",
     "classnames": "^2.2.6",
@@ -19,6 +20,7 @@
     "echarts-gl": "^1.1.1",
     "echarts-liquidfill": "^2.0.2",
     "enquire-js": "^0.2.1",
+    "google-map-react": "^2.1.9",
     "highcharts-exporting": "^0.1.7",
     "highcharts-more": "^0.1.7",
     "json-format": "^1.0.1",
@@ -31,6 +33,7 @@
     "react-adsense": "^0.1.0",
     "react-countup": "^4.2.0",
     "react-draft-wysiwyg": "^1.13.0",
+    "react-google-maps": "^9.4.5",
     "react-helmet": "^6.0.0",
     "react-highcharts": "^16.1.0",
     "react-perfect-scrollbar": "^1.5.0",
@@ -111,5 +114,9 @@
     "trans": "lingui extract --clean && node ./scripts/translate.js",
     "doc": "docsify serve docs",
     "heroku-postbuild": "npm run build"
+  },
+  "browserslist": [],
+  "resolutions": {
+    "webpack-dev-server": "3.11.0"
   }
 }

@@ -175,12 +175,20 @@ const database = [
     icon: 'user',
     route: '/invoices',
   },
-  // {
-  //   id: '9',
-  //   name: 'Users',
-  //   icon: 'user',
-  //   route: '/user',
-  // },
+  {
+    id: '13',
+    name: 'Zone',
+    icon: 'user',
+    route: '/zone',
+  },
+  {
+    id: '131',
+    name: 'Create Zone',
+    menuParentId: '-1',
+    breadcrumbParentId: '13',
+    icon: 'user',
+    route: '/zone/create',
+  },
 ]
 
 export default database
